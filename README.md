@@ -17,6 +17,26 @@ Depends on:
   http://www.kernel.org/pub/linux/utils/util-linux/
   http://software.frodo.looijaard.name/getopt/
 
+# Installation
+
+From within a bash terminal:
+
+    mkdir -p ~/OpenSource/ && cd ~/OpenSource
+    git clone git@github.com:outrightmental/strap.git
+    cd strap && sudo make install
+
+If it's your first time running Strap, initialize a new strap configuration:
+
+    strap init
+
+This will create a folder `.strap` within your home folder. In order to activate the git-repo-synchronization feature of Strap, simply make that `~/.strap/` folder a git repository pointing to your origin repository of choice and Strap will take care of the rest.
+
+# Usage
+
+When you are ready to begin a working session, start by bootstrapping your local developer machine simply with:
+
+    strap
+
 # Components
 
 Platform-agnostic components are:
