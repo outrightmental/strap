@@ -1,0 +1,368 @@
+.TH STRAP 1 "2015 July 04" OUTRIGHTMENTAL "Strap"
+
+.SH NAME
+strap - one command to start your day
+
+.SH SYNOPSIS
+.B strap
+[ 
+.I COMMAND
+] [ 
+.I OPTIONS
+]... [ 
+.I ARGS
+]...
+
+.SH DESCRIPTION
+
+.B strap
+will bootstrap your developer workstation at the start of the day, self-updating (via git repository) its configuration files inside a simple directory tree residing at 
+.IR ~/.strap .
+The
+.B strap
+utility provides a series of commands for manipulating the strap configuration,
+allowing the user to add, remove, edit, synchronize, and manipulate
+buckles.
+
+If no COMMAND is specified, COMMAND defaults to either
+.B show
+or
+.BR ls ,
+depending on the type of specifier in ARGS. Otherwise COMMAND must be one of
+the valid commands listed below.
+
+Several of the commands below rely on or provide additional functionality if
+the strap configuration directory is also a git repository. If the strap configuration
+directory is a git repository, all strap configuration modification commands will
+cause a corresponding git commit. See the \fIEXTENDED GIT EXAMPLE\fP section
+for a detailed description using \fBinit\fP and
+.BR git (1).
+
+The \fBinit\fP command must be run before other commands in order to initialize
+the strap configuration with the correct gpg key id. Buckles are encrypting using
+the gpg key set with \fBinit\fP.
+
+There is a corresponding bash completion script for use with tab completing
+buckle names in
+.BR bash (1).
+
+.SH COMMANDS
+
+.TP
+\fBinit\fP [ \fI--path=sub-folder\fP, \fI-p sub-folder\fP ] 
+Initialize new buckle storage a.k.a. strap configuration. This command must be run first before a buckle
+store can be used.
+.TP
+\fBls\fP \fIsubfolder\fP
+List names of buckles inside the tree at
+.I subfolder
+by using the
+.BR tree (1)
+program. This command is alternatively named \fBlist\fP.
+.TP
+\fBgrep\fP \fIsearch-string\fP
+Searches inside each decrypted buckle file for \fIsearch-string\fP, and displays line
+containing matched string along with filename. Uses
+.BR grep (1)
+for matching. Make use of the \fIGREP_OPTIONS\fP environment variable to set particular
+options.
+.TP
+\fBshow\fP [ \fI--clip\fP, \fI-c\fP ] \fIbuckle-name\fP
+Decrypt and print a buckle named \fIbuckle-name\fP. If \fI--clip\fP or \fI-c\fP
+is specified, do not print the buckle but instead copy the first line to the
+clipboard using
+.BR xclip (1)
+and then restore the clipboard after 45 (or \fISTRAP_CLIP_TIME\fP) seconds.
+.TP
+\fBinsert\fP [ \fI--echo\fP, \fI-e\fP | \fI--multiline\fP, \fI-m\fP ] [ \fI--force\fP, \fI-f\fP ] \fIbuckle-name\fP
+Insert a new buckle into the strap configuration called \fIbuckle-name\fP. This will
+read the new buckle from standard in. If \fI--echo\fP or \fI-e\fP is \fInot\fP specified,
+disable keyboard echo when the buckle is entered and confirm the buckle by asking
+for it twice. If \fI--multiline\fP or \fI-m\fP is specified, lines will be read until
+EOF or Ctrl+D is reached. Otherwise, only a single line from standard in is read. Prompt
+before overwriting an existing buckle, unless \fI--force\fP or \fI-f\fP is specified. This
+command is alternatively named \fBadd\fP.
+.TP
+\fBedit\fP \fIbuckle-name\fP
+Insert a new buckle or edit an existing buckle using the default text editor specified
+by the environment variable \fIEDITOR\fP or using
+.BR vi (1)
+as a fallback. This mode makes use of temporary files for editing, but care is taken to
+ensure that temporary files are created in \fI/dev/shm\fP in order to avoid writing to
+difficult-to-erase disk sectors. If \fI/dev/shm\fP is not accessible, fallback to
+the ordinary \fITMPDIR\fP location, and print a warning.
+.TP
+\fBrm\fP [ \fI--recursive\fP, \fI-r\fP ] [ \fI--force\fP, \fI-f\fP ] \fIbuckle-name\fP
+Remove the buckle named \fIbuckle-name\fP from the strap configuration. This command is
+alternatively named \fBremove\fP or \fBdelete\fP. If \fI--recursive\fP or \fI-r\fP
+is specified, delete strap-name recursively if it is a directory. If \fI--force\fP
+or \fI-f\fP is specified, do not interactively prompt before removal.
+.TP
+\fBmv\fP [ \fI--force\fP, \fI-f\fP ] \fIold-path\fP \fInew-path\fP
+Renames the buckle or directory named \fIold-path\fP to \fInew-path\fP. This
+command is alternatively named \fBrename\fP. If \fI--force\fP is specified,
+silently overwrite \fInew-path\fP if it exists. If \fInew-path\fP ends in a
+trailing \fI/\fP, it is always treated as a directory. Buckles are selectively
+reencrypted to the corresponding keys of their new destination.
+.TP
+\fBcp\fP [ \fI--force\fP, \fI-f\fP ] \fIold-path\fP \fInew-path\fP
+Copies the buckle or directory named \fIold-path\fP to \fInew-path\fP. This
+command is alternatively named \fBcopy\fP. If \fI--force\fP is specified,
+silently overwrite \fInew-path\fP if it exists. If \fInew-path\fP ends in a
+trailing \fI/\fP, it is always treated as a directory. Buckles are selectively
+reencrypted to the corresponding keys of their new destination.
+.TP
+\fBgit\fP \fIgit-command-args\fP...
+If the strap configuration is a git repository, strap \fIgit-command-args\fP as arguments to
+.BR git (1)
+using the strap configuration as the git repository. If \fIgit-command-args\fP is \fBinit\fP,
+in addition to initializing the git repository, add the current contents of the buckle
+store to the repository in an initial commit. If the git config key \fIstrap.signcommits\fP
+is set to \fItrue\fP, then all commits will be signed using \fIuser.signingkey\fP or the
+default git signing key. This config key may be turned on using:
+.B `strap git config --bool --add strap.signcommits true`
+.TP
+\fBhelp\fP
+Show usage message.
+.TP
+\fBversion\fP
+Show version information.
+
+.SH SIMPLE EXAMPLES
+
+.TP
+Initialize strap configuration
+.B charney@laptop ~ $ strap init charney@outright.io 
+.br
+mkdir: created directory \[u2018]/home/charney/.strap\[u2019] 
+.br
+Strap initialized for charney@outright.io.
+.TP
+List existing buckles in store
+.B charney@laptop ~ $ strap 
+.br
+Strap
+.br
+\[u251C]\[u2500]\[u2500] Business 
+.br
+\[u2502]   \[u251C]\[u2500]\[u2500] some-silly-business-site.com 
+.br
+\[u2502]   \[u2514]\[u2500]\[u2500] another-business-site.net 
+.br
+\[u251C]\[u2500]\[u2500] Email 
+.br
+\[u2502]   \[u251C]\[u2500]\[u2500] outright.io 
+.br
+\[u2502]   \[u2514]\[u2500]\[u2500] outright.io 
+.br
+\[u2514]\[u2500]\[u2500] France 
+.br
+    \[u251C]\[u2500]\[u2500] bank 
+.br
+    \[u251C]\[u2500]\[u2500] freebox 
+.br
+    \[u2514]\[u2500]\[u2500] mobilephone  
+.br
+
+.br
+Alternatively, "\fBstrap ls\fP".
+
+.TP
+Show existing buckle
+.B charney@laptop ~ $ strap Email/outright.io 
+.br
+sup3rh4x3rizmynam3 
+.TP
+Copy existing buckle to clipboard
+.B charney@laptop ~ $ strap -c Email/outright.io 
+.br
+Copied Email/hiya@outright.io to clipboard. Will clear in 45 seconds.
+.TP
+Add buckle to store
+.B charney@laptop ~ $ strap insert Business/cheese-whiz-factory 
+.br
+Enter buckle for Business/cheese-whiz-factory: omg so much cheese what am i gonna do
+.TP
+Add multiline buckle to store 
+.B charney@laptop ~ $ strap insert -m Business/cheese-whiz-factory 
+.br
+Enter contents of Business/cheese-whiz-factory and press Ctrl+D when finished: 
+.br
+ 
+.br
+Hey this is my 
+.br
+awesome 
+.br
+multi 
+.br
+line 
+.br
+buckleeeeee. 
+.br
+^D 
+.TP
+Remove buckle from store
+.B charney@laptop ~ $ strap remove Business/cheese-whiz-factory 
+.br
+rm: remove regular file \[u2018]/home/charney/.strap/Business/cheese-whiz-factory.yml\[u2019]? y 
+.br
+removed \[u2018]/home/charney/.strap/Business/cheese-whiz-factory.yml\[u2019]
+
+.SH EXTENDED GIT EXAMPLE
+Here, we initialize new strap configuration, create a git repository, and then manipulate and sync buckles. Make note of the arguments to the first call of \fBstrap git push\fP; consult
+.BR git-push (1)
+for more information.
+
+.B charney@laptop ~ $ strap init hiya@outright.io 
+.br
+mkdir: created directory \[u2018]/home/charney/.strap\[u2019] 
+.br
+Strap initialized for hiya@outright.io. 
+
+.B charney@laptop ~ $ strap git init 
+.br
+Initialized empty Git repository in /home/charney/.strap/.git/
+.br
+[master (root-commit) 998c8fd] Added current contents of strap configuration.
+.br
+ 1 file changed, 1 insertion(+)
+.br
+ create mode 100644 config
+
+.B charney@laptop ~ $ strap git remote add origin kexec.com:strap-store 
+
+.B charney@laptop ~ $ strap edit Amazon/amazonemail@email.com
+.br
+mkdir: created directory \[u2018]/home/charney/.strap/Amazon\[u2019] 
+.br
+[master 30fdc1e] Added buckle for Amazon/amazonemail@email.com to store.
+.br
+1 file changed, 0 insertions(+), 0 deletions(-) 
+.br
+create mode 100644 Amazon/amazonemail@email.com.yml 
+.br
+.B charney@laptop ~ $ strap git push -u --all
+.br
+Counting objects: 4, done. 
+.br
+Delta compression using up to 2 threads. 
+.br
+Compressing objects: 100% (3/3), done. 
+.br
+Writing objects: 100% (4/4), 921 bytes, done. 
+.br
+Total 4 (delta 0), reused 0 (delta 0) 
+.br
+To kexec.com:strap-store 
+.br
+* [new branch]      master -> master 
+.br
+Branch master set up to track remote branch master from origin. 
+
+.B charney@laptop ~ $ strap insert Amazon/otheraccount@email.com 
+.br
+Enter buckle for Amazon/otheraccount@email.com: som3r3a11yb1gp4ssw0rd!!88** 
+.br
+[master b9b6746] Added given buckle for Amazon/otheraccount@email.com to store. 
+.br
+1 file changed, 0 insertions(+), 0 deletions(-) 
+.br
+create mode 100644 Amazon/otheraccount@email.com.yml 
+
+.B charney@laptop ~ $ strap rm Amazon/amazonemail@email.com 
+.br
+rm: remove regular file \[u2018]/home/charney/.strap/Amazon/amazonemail@email.com.yml\[u2019]? y 
+.br
+removed \[u2018]/home/charney/.strap/Amazon/amazonemail@email.com.yml\[u2019] 
+.br
+rm 'Amazon/amazonemail@email.com.yml' 
+.br
+[master 288b379] Removed Amazon/amazonemail@email.com from store. 
+.br
+1 file changed, 0 insertions(+), 0 deletions(-) 
+.br
+delete mode 100644 Amazon/amazonemail@email.com.yml 
+
+.B charney@laptop ~ $ strap git push
+.br
+Counting objects: 9, done. 
+.br
+Delta compression using up to 2 threads. 
+.br
+Compressing objects: 100% (5/5), done. 
+.br
+Writing objects: 100% (7/7), 1.25 KiB, done. 
+.br
+Total 7 (delta 0), reused 0 (delta 0) 
+.br
+To kexec.com:strap-store
+
+.SH FILES
+
+.TP
+.B ~/.strap
+The default buckle storage directory.
+.TP
+.B ~/.strap/config
+Contains the default gpg key identification used for encryption and decryption.
+Multiple gpg keys may be specified in this file, one per line. If this file
+exists in any sub directories, buckles inside those sub directories are
+encrypted using those keys. This should be set using the \fBinit\fP command.
+
+.SH ENVIRONMENT VARIABLES
+
+.TP
+.I STRAP_DIR
+Overrides the default buckle storage directory.
+.TP
+.I STRAP_GIT
+Overrides the default root of the git repository, which is helpful if
+\fISTRAP_DIR\fP is temporarily set to a sub-directory of the default
+strap configuration.
+.TP
+.I STRAP_X_SELECTION
+Overrides the selection buckled to \fBxclip\fP, by default \fIclipboard\fP. See
+.BR xclip (1)
+for more info.
+.TP
+.I STRAP_CLIP_TIME
+Specifies the number of seconds to wait before restoring the clipboard, by default
+\fI45\fP seconds.
+.TP
+.I STRAP_UMASK
+Sets the umask of all files modified by strap, by default \fI077\fP.
+.TP
+.I EDITOR
+The location of the text editor used by \fBedit\fP.
+.SH SEE ALSO
+.BR gpg2 (1),
+.BR pwgen (1),
+.BR git (1),
+.BR xclip (1).
+
+.SH AUTHOR
+.B strap
+was written by
+.MT hiya@outright.io
+Outright Mental Inc.
+.ME .
+For updates and more information, a project page is available on the
+.UR http://\:strap.outright.io/
+World Wide Web
+.UE .
+
+.SH COPYING
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.

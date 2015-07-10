@@ -1,6 +1,47 @@
 # Strap
 
-One command to bootstrap a developer workstation.
+**One command to start your day.**
+
+Bootstrap a developer workstation at the start of the day by running one command that self-updates its configuration from a git repository.
+
+Visit the project page for more information: http://strap.outright.io/
+
+Please see the man page for documentation and examples.
+
+Depends on:
+- bash
+  http://www.gnu.org/software/bash/
+- git
+  http://www.git-scm.com/
+- GNU getopt
+  http://www.kernel.org/pub/linux/utils/util-linux/
+  http://software.frodo.looijaard.name/getopt/
+
+# Components
+
+Platform-agnostic components are:
+
++ user (whoami & group)
++ options (what sections to run? input/auto)
++ touchsudo
++ ssh (test, config, install credentials)
++ openvpn (install credentials)
++ profile (bash_profile)
++ strap
++ tmux
++ repository (git, sync all repos)
++ harvest (hcl, aliases)
++ systempackage
++ ruby (and rbenv, bundle)
++ nodejs (and npm)
++ python (and pip)
++ go
++ mysql (server, client, libs)
++ mongo (server)
++ redis (server, tools)
++ sublime (v3)
+
+# Example
 
     $ strap
     
@@ -64,31 +105,31 @@ One command to bootstrap a developer workstation.
     
     >> Sublime: Sublime Text Build 3083
     
-    >> Strap: Password Repository
+    >> Password Repository
     Already up-to-date.
     Counting objects: 7, done.
     Delta compression using up to 4 threads.
     Compressing objects: 100% (4/4), done.
     Writing objects: 100% (4/4), 1.41 KiB | 0 bytes/s, done.
     Total 4 (delta 2), reused 0 (delta 0)
-    To git@y00.us:charney/pass.git
+    To git@y00.us:charney/strap.git
        094699d..fcc924f  master -> master
     
     Bundler version 1.9.6
-    >> Strap: Harvest Command Line
+    >> Harvest Command Line
     >> Pulling existing repository /home/charney/OpenSource/hcl
     Ya está en «master»
     Your branch is up-to-date with 'origin/master'.
     Already up-to-date.
     
-    >> Strap: Outright Mental Platform
+    >> Outright Mental Platform
     
     >> Pulling existing repository /home/charney/Development/o2/platform
     Ya está en «master»
     Your branch is up-to-date with 'origin/master'.
     Already up-to-date.
     
-    >> Strap: Open Source Development
+    >> Open Source Development
     
     >> Cloning new repository /home/nick/OpenSource/developer-bootstrap
     Clonar en «developer-bootstrap»...
@@ -100,7 +141,7 @@ One command to bootstrap a developer workstation.
     Checking connectivity... hecho.
         
     ping: unknown host signal
-    >> Strap: SKIPPING Signal (Out of Network)
+    >> SKIPPING Signal (Out of Network)
     
                             --- 
                          +        -- 
