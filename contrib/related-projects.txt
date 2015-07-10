@@ -1,0 +1,4 @@
+In the future, projects making use of Strap may be included here in `/contrib/`
+
+* pass: The standard UNIX password manager.
+  <http://passwordstore.org>
