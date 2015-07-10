@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640">
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Strap by outrightmental</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/outrightmental/strap">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Strap</h1>
+            <h2>One command to bootstrap your workstation for local development.</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/outrightmental/strap/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/outrightmental/strap/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a id="strap" class="anchor" href="#strap" aria-hidden="true"><span class="octicon octicon-link"></span></a>Strap</h1>
+
+<p><strong>One command to start your day.</strong></p>
+
+<p>Bootstrap a developer workstation at the start of the day by running one command that self-updates its configuration from a git repository.</p>
+
+<p>Visit the project page for more information: <a href="http://strap.outright.io/">http://strap.outright.io/</a></p>
+
+<p>Please see the man page for documentation and examples.</p>
+
+<p>Depends on:</p>
+
+<ul>
+<li>bash
+<a href="http://www.gnu.org/software/bash/">http://www.gnu.org/software/bash/</a>
+</li>
+<li>git
+<a href="http://www.git-scm.com/">http://www.git-scm.com/</a>
+</li>
+<li>GNU getopt
+<a href="http://www.kernel.org/pub/linux/utils/util-linux/">http://www.kernel.org/pub/linux/utils/util-linux/</a>
+<a href="http://software.frodo.looijaard.name/getopt/">http://software.frodo.looijaard.name/getopt/</a>
+</li>
+</ul>
+
+<h1>
+<a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h1>
+
+<p>Platform-agnostic components are:</p>
+
+<ul>
+<li>user (whoami &amp; group)</li>
+<li>options (what sections to run? input/auto)</li>
+<li>touchsudo</li>
+<li>ssh (test, config, install credentials)</li>
+<li>openvpn (install credentials)</li>
+<li>profile (bash_profile)</li>
+<li>strap</li>
+<li>tmux</li>
+<li>repository (git, sync all repos)</li>
+<li>harvest (hcl, aliases)</li>
+<li>systempackage</li>
+<li>ruby (and rbenv, bundle)</li>
+<li>nodejs (and npm)</li>
+<li>python (and pip)</li>
+<li>go</li>
+<li>mysql (server, client, libs)</li>
+<li>mongo (server)</li>
+<li>redis (server, tools)</li>
+<li>sublime (v3)</li>
+</ul>
+
+<h1>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h1>
+
+<pre><code>$ strap
+
+&gt;&gt; User: charney
+
+&gt;&gt; touch sudo please
+[sudo] password for charney: 
+
+&gt;&gt; Pinged Gitlab @ Outright Mental Inc.
+&gt; Welcome to GitLab, Charney Kaye!
+
+&gt;&gt; OS: Linux
+&gt;&gt; Debian Package virtualbox is installed.
+Version: 4.3.10-dfsg-1ubuntu5
+
+&gt;&gt; Debian Package vagrant is installed.
+Version: 1.4.3-1
+Ruby-Versions: ruby1.9.1
+
+&gt;&gt; Debian Package git is installed.
+Version: 1:1.9.1-1ubuntu0.1
+
+&gt;&gt; Debian Package xclip is installed.
+Version: 0.12+svn84-4
+
+&gt;&gt; Debian Package python is installed.
+Version: 2.7.5-5ubuntu3
+
+&gt;&gt; Debian Package tmux is installed.
+Version: 1.8-5
+
+&gt;&gt; Debian Package tree is installed.
+Version: 1.6.0-1
+
+&gt;&gt; Debian Package libssl-dev is installed.
+Version: 1.0.1f-1ubuntu2.15
+
+&gt;&gt; Debian Package openvpn is installed.
+Version: 2.3.7-debian0
+
+&gt;&gt; Debian Package network-manager-openvpn-gnome is installed.
+Version: 0.9.8.2-1ubuntu4
+
+&gt;&gt; Debian Package nfs-kernel-server is installed.
+Version: 1:1.2.8-6ubuntu1.1
+
+&gt;&gt; Debian Package python-pip is installed.
+Version: 1.5.4-1ubuntu3
+
+&gt;&gt; Pulling existing repository /home/charney/.rbenv
+Ya está en «master»
+Your branch is up-to-date with 'origin/master'.
+Already up-to-date.
+
+&gt;&gt; Pulling existing repository /home/charney/.rbenv/plugins/ruby-build
+Ya está en «master»
+Your branch is up-to-date with 'origin/master'.
+Already up-to-date.
+
+&gt;&gt; Rbenv Ruby: 2.1.5
+
+&gt;&gt; Sublime: Sublime Text Build 3083
+
+&gt;&gt; Password Repository
+Already up-to-date.
+Counting objects: 7, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 1.41 KiB | 0 bytes/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+To git@y00.us:charney/strap.git
+   094699d..fcc924f  master -&gt; master
+
+Bundler version 1.9.6
+&gt;&gt; Harvest Command Line
+&gt;&gt; Pulling existing repository /home/charney/OpenSource/hcl
+Ya está en «master»
+Your branch is up-to-date with 'origin/master'.
+Already up-to-date.
+
+&gt;&gt; Outright Mental Platform
+
+&gt;&gt; Pulling existing repository /home/charney/Development/o2/platform
+Ya está en «master»
+Your branch is up-to-date with 'origin/master'.
+Already up-to-date.
+
+&gt;&gt; Open Source Development
+
+&gt;&gt; Cloning new repository /home/nick/OpenSource/developer-bootstrap
+Clonar en «developer-bootstrap»...
+remote: Counting objects: 7, done.
+remote: Compressing objects: 100% (7/7), done.
+remote: Total 7 (delta 1), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (7/7), done.
+Resolving deltas: 100% (1/1), done.
+Checking connectivity... hecho.
+
+ping: unknown host signal
+&gt;&gt; SKIPPING Signal (Out of Network)
+
+                        --- 
+                     +        -- 
+                 --( /     \ )$$$$$$$$$$$$$ 
+             --$$$(   O   O  )$$$$$$$$$$$$$$$- 
+            /$$$(       U     )        $$$$$$$\ 
+          /$$$$$(              )--   $$$$$$$$$$$\ 
+         /$$$$$/ (      O     )   $$$$$$   \$$$$$\ 
+         $$$$$/   /            $$$$$$   \   \$$$$$---- 
+         $$$$$$  /          $$$$$$         \  ----  - 
+ ---     $$$  /          $$$$$$      \           --- 
+   --  --  /      /\  $$$$$$            /     ---= 
+     +        /    $$$$$$              '--- $$$$$$ 
+       --\/$$$\ $$$$$$                      /$$$$$ 
+         \$$$$$$$$$                        /$$$$$/ 
+          \$$$$$$                         /$$$$$/ 
+            \$$$$$--  /                -- $$$$/ 
+             --$$$$$$$---------------  $$$$$-- 
+                \$$$$$$$$$$$$$$$$$$$$$$$$- 
+                  --$$$$$$$$$$$$$$$$$$-    
+
+&gt;&gt; Bootstrapped OK. Happy Coding!
+</code></pre>
+
+<h3>
+<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+
+<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+
+<h3>
+<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+
+<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/outrightmental">outrightmental</a> can be found on <a href="https://github.com/outrightmental/strap">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-45638556-10");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
