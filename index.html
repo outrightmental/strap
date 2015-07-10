@@ -73,6 +73,31 @@
 </ul>
 
 <h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>From within a bash terminal:</p>
+
+<pre><code>mkdir -p ~/OpenSource/ &amp;&amp; cd ~/OpenSource
+git clone git@github.com:outrightmental/strap.git
+cd strap &amp;&amp; sudo make install
+</code></pre>
+
+<p>If it's your first time running Strap, initialize a new strap configuration:</p>
+
+<pre><code>strap init
+</code></pre>
+
+<p>This will create a folder <code>.strap</code> within your home folder. In order to activate the git-repo-synchronization feature of Strap, simply make that <code>~/.strap/</code> folder a git repository pointing to your origin repository of choice and Strap will take care of the rest.</p>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>When you are ready to begin a working session, start by bootstrapping your local developer machine simply with:</p>
+
+<pre><code>strap
+</code></pre>
+
+<h1>
 <a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h1>
 
 <p>Platform-agnostic components are:</p>
@@ -224,16 +249,6 @@ ping: unknown host signal
 
 &gt;&gt; Bootstrapped OK. Happy Coding!
 </code></pre>
-
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
       </section>
 
       <footer>
