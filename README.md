@@ -29,7 +29,7 @@ Platform-agnostic components are:
 + profile (bash_profile)
 + strap
 + tmux
-+ repository (git)
++ repository (git, sync all repos)
 + harvest (hcl, aliases)
 + systempackage
 + ruby (and rbenv, bundle)
