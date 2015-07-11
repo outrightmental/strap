@@ -17,11 +17,12 @@ RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 GOLD=$(tput setaf 3)
 BLUE=$(tput setaf 4)
+GRAY=$(tput setaf 7)
 BULLET=" $GREEN•$NORMAL"
 CHKBULLET=" $GREEN$BOLD✔$NORMAL"
 WARNBULLET=" $GOLD•$NORMAL"
 FAILBULLET=" $RED•$NORMAL"
-SUBULLET=" $BLUE-$NORMAL"
+SUBULLET=" $GRAY-$NORMAL"
 NOBULLET="  "
 
 # Default Configuration
@@ -81,6 +82,23 @@ parse_yaml() {
       }
    }'
 }
+repo_git() { # <targetPath> <moduleName> <repoUrl>
+  if [ -d "$1/$2" ]; then
+    printf "$SUBULLET Pulling existing repository $1/$2\n"
+    cd $1/$2
+    git checkout master || error "Failed to checkout master branch of git repo $1"
+    git pull || error "Failed to pull repository $1/$2"
+  else
+    printf "$SUBULLET Cloning new repository $1/$2\n"
+    if [ ! -d "$1" ]; then
+      printf "$SUBULLET Creating directory $1\n"
+      mkdir -p $1 || error "Failed to create directory $1"
+    fi
+    cd $1 || error "Failed to located directory $1"
+    git clone $3 $2 || error "Failed to clone $3 $2 into $1"
+  fi
+  space
+}
 error() {
   if (( $# >= 1 )); then MSG="$1"; else MSG=""; fi
   printf "$FAILBULLET Error! $MSG\n"
@@ -93,14 +111,21 @@ error() {
 
 #
 # BEGIN buckle functions
+# buckle_widget <filepath> <bucklename>
 #
-buckle_whoami() {
+prebuckle_whoami() {
   WHOAMI=$(whoami) || error "Must be logged in!"
   printf "$BULLET hello ${BOLD}$WHOAMI$NORMAL\n"
   sudo -v || error "Must be Sudoer!"
 }
-buckle_banner() {
+prebuckle_banner() {
   printf "\n$1\n"
+}
+buckleup() {
+  local bfile="$1"
+  local btype=$( cat $bfile | grep ^type: | sed -e 's/type:\s*\([a-z0-9]\+\)/\1/g' )
+  local cmd="buckle_$btype $bfile $2"
+  eval $cmd
 }
 buckle_dpkg() {
   eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
@@ -115,12 +140,34 @@ buckle_dpkg() {
     printf "$NOBULLET $GOLD$dpkg_name$NORMAL\n"
     sudo apt-get install $dpkg_name
   fi
+  rm $tmpfile
 }
-buckleup() {
-  local bfile="$1"
-  local btype=$( cat $bfile | grep ^type: | sed -e 's/type:\s*\([a-z0-9]\+\)/\1/g' )
-  local cmd="buckle_$btype $bfile $2"
-  eval $cmd
+buckle_pass() {
+  local tmpfile=$(mktemp)
+  pass version > $tmpfile
+  local pass_version=$(cat $tmpfile | grep -i ' v[0-9\.]* ' | sed -e 's/.* v\([0-9\.]\+\) .*/\1/gi')
+  if grep -i -q ' v[0-9\.]* ' $tmpfile; then
+    printf "$NOBULLET ${BLUE}pass$NORMAL v$pass_version\n"
+  else
+    printf "$NOBULLET ${RED}pass$NORMAL\n"
+    error "Please manually install ${BOLD}pass$NORMAL"
+  fi
+  pass git pull
+  pass git push
+}
+buckle_rbenv() {
+  local tmpfile=$(mktemp)
+  rbenv version > $tmpfile
+  local rbenv_version=$(cat $tmpfile | grep -i '^[0-9\.]* ' | sed -e 's/.* v\([0-9\.]\+\) .*/\1/gi')
+  if grep -i -q '^[0-9\.]* ' $tmpfile; then
+    printf "$NOBULLET ${BLUE}rbenv$NORMAL v$rbenv_version\n"
+  elif [[ "$OSTYPE" == "linux"* ]]; then
+    repo_git ~ .rbenv https://github.com/sstephenson/rbenv.git
+    repo_git ~/.rbenv/plugins ruby-build https://github.com/sstephenson/ruby-build.git
+  else
+    printf "$NOBULLET ${RED}rbenv$NORMAL\n"
+    error "Please manually install ${BOLD}rbenv$NORMAL"
+  fi
 }
 #
 # END buckle functions
@@ -324,9 +371,9 @@ cmd_up() {
       fi
     done < "$configfile"
     space
-    buckle_banner "$strapconfig_begin_banner"
+    prebuckle_banner "$strapconfig_begin_banner"
     space
-    buckle_whoami
+    prebuckle_whoami
     space
     straplist=""
     for eachstrap in $allstraps

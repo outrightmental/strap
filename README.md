@@ -152,11 +152,12 @@ Currently shipped:
 
 + whoami (get user and touch sudo)
 + dpkg (debian packages)
++ pass (password store)
++ rbenv
 
 To do:
 
 + repo (git, sync all repos)
-+ pass (password store)
 + profile (bash_profile)
 + options (what sections to run? input/auto)
 + ssh (test, config, install credentials)
@@ -166,7 +167,7 @@ To do:
 + rbtools (review board)
 + sublime (v3)
 + nginx
-+ ruby (and rbenv, bundle)
++ ruby (bundler for rbenv)
 + nodejs (and npm)
 + python (and pip)
 + go
