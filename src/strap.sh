@@ -274,7 +274,7 @@ cmd_version() {
     ============================================
     =   strap: one command to start your day   =
     =                                          =
-    =                  v0.1.1                  =
+    =                  v0.1.2                  =
     =                                          =
     =          by Outright Mental Inc.         =
     =             hiya@outright.io             =
