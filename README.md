@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/outrightmental/strap.svg)](https://travis-ci.org/outrightmental/strap)
+
 # Strap
 
 **One command to start your day.**
