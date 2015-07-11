@@ -174,5 +174,3 @@ To do:
 + mysql (server, client, libs)
 + mongo (server)
 + redis (server, tools)
-
-# Example
