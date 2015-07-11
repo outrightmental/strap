@@ -6,7 +6,7 @@
 
 Bootstrap a developer workstation at the start of the day by running one command that self-updates its configuration from a git repository.
 
-![Strap: One command to start your day](static.outright.io/2015/07/strap-by-outright-mental-inc-demo-one-command-to-start-your-day.gif)
+![Strap: One command to start your day](http://static.outright.io/2015/07/strap-by-outright-mental-inc-demo-one-command-to-start-your-day.gif)
 
 Visit the project page for more information: http://strap.outright.io/
 
