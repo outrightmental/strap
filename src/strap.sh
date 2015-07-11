@@ -27,6 +27,7 @@ NOBULLET="  "
 
 # Default Configuration
 strapconfig_begin_banner='        |\n   __|  __|   __|  _` |  __ \\\n \\__ \\  |    |    (   |  |   |\n ____/ \\__| _|   \__,_|  .__/\n                        _|'
+strapconfig_complete_banner="                        --- \n                     -        -- \n                 --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n             --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n            /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n          /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n         /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n         \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n         \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n ---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
 
 export GIT_DIR="${STRAP_GIT:-$PREFIX}/.git"
 export GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
@@ -116,7 +117,7 @@ prebuckle_whoami() {
   printf "$BULLET hello ${BOLD}$WHOAMI$NORMAL\n"
   sudo -v || error "Must be Sudoer!"
 }
-prebuckle_banner() {
+banner() {
   printf "\n$1\n"
 }
 buckleup() {
@@ -384,7 +385,7 @@ cmd_up() {
       fi
     done < "$configfile"
     space
-    prebuckle_banner "$strapconfig_begin_banner"
+    banner "$strapconfig_begin_banner"
     space
     prebuckle_whoami
     space
@@ -428,6 +429,9 @@ cmd_up() {
       done
       space
     done
+    banner "$strapconfig_complete_banner"
+    printf "$CHKBULLET ${BOLD}Strapped$NORMAL. Happy Coding!\n"
+    space
   elif [[ -z $path ]]; then
     die "Error: strap configuration is empty. Try \"strap init\"."
   else

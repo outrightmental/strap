@@ -100,6 +100,8 @@ Here's an example of a fully configured `strap edit config`:
       base: echo
     begin:
       banner: "Hello World!"
+    complete
+      banner: "All Done!"
 
 ## Git Sync
 
