@@ -154,10 +154,10 @@ Currently shipped:
 + dpkg (debian packages)
 + pass (password store)
 + rbenv
++ repo (git, sync all repos)
 
 To do:
 
-+ repo (git, sync all repos)
 + profile (bash_profile)
 + options (what sections to run? input/auto)
 + ssh (test, config, install credentials)

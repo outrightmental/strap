@@ -84,18 +84,16 @@ parse_yaml() {
 }
 repo_git() { # <targetPath> <moduleName> <repoUrl>
   if [ -d "$1/$2" ]; then
-    printf "$SUBULLET Pulling existing repository $1/$2\n"
-    cd $1/$2
-    git checkout master || error "Failed to checkout master branch of git repo $1"
-    git pull || error "Failed to pull repository $1/$2"
+    printf "$SUBULLET Syncing existing repository $1/$2\n"
+    cd $1/$2 && git checkout master || error "Failed to checkout master branch of git repo $1"
+    cd $1/$2 && git pull || error "Failed to pull repository $1/$2"
   else
     printf "$SUBULLET Cloning new repository $1/$2\n"
     if [ ! -d "$1" ]; then
       printf "$SUBULLET Creating directory $1\n"
       mkdir -p $1 || error "Failed to create directory $1"
     fi
-    cd $1 || error "Failed to located directory $1"
-    git clone $3 $2 || error "Failed to clone $3 $2 into $1"
+    cd $1 && git clone $3 $2 || error "Failed to clone $3 $2 into $1"
   fi
   space
 }
@@ -143,6 +141,7 @@ buckle_dpkg() {
   rm $tmpfile
 }
 buckle_pass() {
+  eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
   local tmpfile=$(mktemp)
   pass version > $tmpfile
   local pass_version=$(cat $tmpfile | grep -i ' v[0-9\.]* ' | sed -e 's/.* v\([0-9\.]\+\) .*/\1/gi')
@@ -156,6 +155,7 @@ buckle_pass() {
   pass git push
 }
 buckle_rbenv() {
+  eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
   local tmpfile=$(mktemp)
   rbenv version > $tmpfile
   local rbenv_version=$(cat $tmpfile | grep -i '^[0-9\.]* ' | sed -e 's/.* v\([0-9\.]\+\) .*/\1/gi')
@@ -167,6 +167,19 @@ buckle_rbenv() {
   else
     printf "$NOBULLET ${RED}rbenv$NORMAL\n"
     error "Please manually install ${BOLD}rbenv$NORMAL"
+  fi
+}
+buckle_repo() {
+  eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
+  if [ -z $buckledata_vcs ]; then $buckledata_vcs='git'; fi
+  if [ -z $buckledata_url ]; then error "$BOLD$2$NORMAL must have a ${BOLD}url:$NORMAL"; fi
+  if [ -z $buckledata_clone_as ]; then error "$BOLD$2$NORMAL must have a ${BOLD}clone_as:$NORMAL"; fi
+  if [ -z $buckledata_parent_path ]; then error "$BOLD$2$NORMAL must have a ${BOLD}parent_path:$NORMAL"; fi
+  printf "$NOBULLET ${BLUE}$buckledata_url$NORMAL\n"
+  if [ $buckledata_vcs == 'git' ]; then
+    repo_git $buckledata_parent_path $buckledata_clone_as $buckledata_url
+  else
+    error "Strap does not support vcs $BOLD$buckledata_vcs"
   fi
 }
 #
