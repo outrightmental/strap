@@ -84,17 +84,18 @@ parse_yaml() {
    }'
 }
 repo_git() { # <targetPath> <moduleName> <repoUrl>
-  if [ -d "$1/$2" ]; then
-    printf "$SUBULLET Syncing existing repository $1/$2\n"
-    cd $1/$2 && git checkout master || error "Failed to checkout master branch of git repo $1"
-    cd $1/$2 && git pull || error "Failed to pull repository $1/$2"
+  REPODIR="$1/$2"
+  if [ -d "$REPODIR" ]; then
+    printf "$SUBULLET Syncing existing repository $REPODIR\n"
+    [[ -n $(cd $REPODIR && git checkout master) ]] || error "Failed to checkout master branch of git repo $1"
+    [[ -n $(cd $REPODIR && git pull) ]] || error "Failed to pull repository $1/$2"
   else
     printf "$SUBULLET Cloning new repository $1/$2\n"
     if [ ! -d "$1" ]; then
       printf "$SUBULLET Creating directory $1\n"
       mkdir -p $1 || error "Failed to create directory $1"
     fi
-    cd $1 && git clone $3 $2 || error "Failed to clone $3 $2 into $1"
+ #   cd $1 && git clone $3 $2 || error "Failed to clone $3 $2 into $1"
   fi
   space
 }
