@@ -1,52 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/github-dark.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>Strap by outrightmental</title>
-  </head>
+  <title>Strap</title>
+  <meta name="description" content="One command to bootstrap your workstation for local development.">
 
-  <body>
-    <a id="forkme_banner" href="https://github.com/outrightmental/strap">View on GitHub</a>
-    <div class="shell">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Strap</h1>
-            <h2>One command to bootstrap your workstation for local development.</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
+</head>
 
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/outrightmental/strap/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/outrightmental/strap/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
+<body>
 
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Strap</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">One command to bootstrap your workstation for local development.</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/outrightmental/strap/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/outrightmental/strap/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/outrightmental/strap" class="code">View Strap on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <p><a href="https://travis-ci.org/outrightmental/strap"><img src="https://travis-ci.org/outrightmental/strap.svg" alt="Build Status"></a></p>
 
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
-        <h1>
+<h1>
 <a id="strap" class="anchor" href="#strap" aria-hidden="true"><span class="octicon octicon-link"></span></a>Strap</h1>
 
 <p><strong>One command to start your day.</strong></p>
@@ -73,6 +65,54 @@
 </ul>
 
 <h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>When you are ready to begin a working session, start by bootstrapping your local developer machine simply with:</p>
+
+<pre><code>strap
+</code></pre>
+
+<p>Which automatically straps up all the "buckles" for your workstation:   </p>
+
+<pre><code>        |
+   __|  __|   __|  _` |  __ \
+ \__ \  |    |    (   |  |   |
+ ____/ \__| _|   \__,_|  .__/
+                        _|
+
+ • hello charney
+
+ ✔ ubuntu
+
+ • no osx
+
+ ✔ base
+
+ ✔ o2
+
+ping: unknown host gitlab01dv1
+ • no bt
+
+ ✔ gh
+
+ • Strap ubuntu...
+   libssl-dev 1.0.1f-1ubuntu2.15
+   xclip 0.12+svn84-4
+   tree 1.6.0-1
+   nfs-kernel-server 1:1.2.8-6ubuntu1.1
+   python-pip 1.5.4-1ubuntu3
+   network-manager-openvpn-gnome 0.9.8.2-1ubuntu4
+   virtualbox 4.3.10-dfsg-1ubuntu5
+   python 2.7.5-5ubuntu3
+   openvpn 2.3.7-debian0
+   vagrant 1.4.3-1
+   tmux 1.8-5
+   git 1:1.9.1-1ubuntu0.1
+</code></pre>
+
+<p>And so on, and so forth.. This is a scaffold for <em>your</em> personal optimal configuration, to make the workstation itself ephemeral.</p>
+
+<h1>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
 
 <p>From within a bash terminal:</p>
@@ -87,185 +127,146 @@ cd strap &amp;&amp; sudo make install
 <pre><code>strap init
 </code></pre>
 
-<p>This will create a folder <code>.strap</code> within your home folder. In order to activate the git-repo-synchronization feature of Strap, simply make that <code>~/.strap/</code> folder a git repository pointing to your origin repository of choice and Strap will take care of the rest.</p>
+<p>This will create a folder <code>.strap</code> within your home folder, with a blank <code>config.sh.yml</code> file inside.</p>
 
 <h1>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h1>
 
-<p>When you are ready to begin a working session, start by bootstrapping your local developer machine simply with:</p>
+<p>Edit the configuration with:</p>
 
-<pre><code>strap
+<pre><code>strap edit config
+</code></pre>
+
+<p>This will open the configuration in your editor of choice, probably <code>vi</code> by default. <em>(If you prefer to use a different editor, just set environment variable <code>EDITOR</code>, e.g. <code>export EDITOR=nano</code> in your <code>.bash_profile</code>)</em></p>
+
+<p>Available Strap configuration options are:</p>
+
+<ul>
+<li>
+<code>straps</code> containing straps, each of which evaluates a command in order to decide whether that strap will be included in the current run.</li>
+<li>
+<code>begin</code> containing options about the beginning of a run.</li>
+</ul>
+
+<p>Here's an example of a fully configured <code>strap edit config</code>:</p>
+
+<pre><code>straps:
+  o2: ping -c1 code.outright.io
+  bt: ping -c1 gitlab01dv1
+  gh: ping -c1 github.com
+  base: echo
+begin:
+  banner: "Hello World!"
+</code></pre>
+
+<h2>
+<a id="git-sync" class="anchor" href="#git-sync" aria-hidden="true"><span class="octicon octicon-link"></span></a>Git Sync</h2>
+
+<p>In order to activate the git-repo-synchronization features of Strap, use <code>strap git &lt;command&gt;</code> to initialize a git repository from the internal buckle storage folder pointing to your origin repository of choice:</p>
+
+<pre><code>strap git init
+strap git remote add origin git@github.com:charneykaye/strap.git
+strap git push origin master -u
 </code></pre>
 
 <h1>
-<a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h1>
+<a id="buckles" class="anchor" href="#buckles" aria-hidden="true"><span class="octicon octicon-link"></span></a>Buckles</h1>
 
-<p>Platform-agnostic components are:</p>
+<p>In its simplest form, a buckle is a pointer to a "type" meaning a Prototype of something that you want to strap up on your workstation.</p>
+
+<p>The fastest way to add a new one is with <code>strap insert &lt;path&gt;</code>:</p>
+
+<pre><code>strap insert base/passwordstore
+
+  &gt; mkdir: created directory «/home/nick/.strap/base»
+  &gt; Enter buckle YAML for base/passwordstore:
+
+type: pass
+
+  &gt; [master 212eca8] Add given buckle for base/passwordstore to store.
+  &gt;  1 file changed, 1 insertion(+)
+  &gt;  create mode 100644 base/passwordstore.sh.yml
+</code></pre>
+
+<p>It's also possible to add a multiline buckle with <code>strap insert -m &lt;path&gt;</code>:</p>
+
+<pre><code>strap insert -m github/passwords
+
+  &gt; Enter buckle YAML for github/passwords and press Ctrl+D when finished:
+
+type: repo
+url: git@github.com:charneykaye/pass.git
+clone_as: .password-store
+parent_path: $HOME
+
+  &gt; [master 4f0410f] Add given buckle for o2/passwords to store.
+  &gt; 1 file changed, 1 insertion(+)
+  &gt; create mode 100644 o2/pass.sh.yml
+</code></pre>
+
+<p>Inside of our <code>ubuntu</code> strap we might keep (for example) a buckle to ensure that VirtualBox is installed on a Debian linux workstation. We could call this <code>ubuntu/virtualbox</code> and it would be run automatically with the <code>ubuntu</code> strap  <strong>because the strap name is found within the buckle path</strong>.</p>
+
+<pre><code>type: dpkg
+name: virtualbox
+</code></pre>
+
+<h1>
+<a id="types" class="anchor" href="#types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Types</h1>
+
+<p>Currently shipped:</p>
 
 <ul>
-<li>user (whoami &amp; group)</li>
+<li>whoami (get user and touch sudo)</li>
+<li>dpkg (debian packages)</li>
+</ul>
+
+<p>To do:</p>
+
+<ul>
+<li>repo (git, sync all repos)</li>
+<li>pass (password store)</li>
+<li>profile (bash_profile)</li>
 <li>options (what sections to run? input/auto)</li>
-<li>touchsudo</li>
 <li>ssh (test, config, install credentials)</li>
 <li>openvpn (install credentials)</li>
-<li>profile (bash_profile)</li>
-<li>strap</li>
 <li>tmux</li>
-<li>repository (git, sync all repos)</li>
 <li>harvest (hcl, aliases)</li>
-<li>systempackage</li>
+<li>rbtools (review board)</li>
+<li>sublime (v3)</li>
+<li>nginx</li>
 <li>ruby (and rbenv, bundle)</li>
 <li>nodejs (and npm)</li>
 <li>python (and pip)</li>
 <li>go</li>
+<li>java</li>
 <li>mysql (server, client, libs)</li>
 <li>mongo (server)</li>
 <li>redis (server, tools)</li>
-<li>sublime (v3)</li>
 </ul>
 
 <h1>
 <a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h1>
-
-<pre><code>$ strap
-
-&gt;&gt; User: charney
-
-&gt;&gt; touch sudo please
-[sudo] password for charney: 
-
-&gt;&gt; Pinged Gitlab @ Outright Mental Inc.
-&gt; Welcome to GitLab, Charney Kaye!
-
-&gt;&gt; OS: Linux
-&gt;&gt; Debian Package virtualbox is installed.
-Version: 4.3.10-dfsg-1ubuntu5
-
-&gt;&gt; Debian Package vagrant is installed.
-Version: 1.4.3-1
-Ruby-Versions: ruby1.9.1
-
-&gt;&gt; Debian Package git is installed.
-Version: 1:1.9.1-1ubuntu0.1
-
-&gt;&gt; Debian Package xclip is installed.
-Version: 0.12+svn84-4
-
-&gt;&gt; Debian Package python is installed.
-Version: 2.7.5-5ubuntu3
-
-&gt;&gt; Debian Package tmux is installed.
-Version: 1.8-5
-
-&gt;&gt; Debian Package tree is installed.
-Version: 1.6.0-1
-
-&gt;&gt; Debian Package libssl-dev is installed.
-Version: 1.0.1f-1ubuntu2.15
-
-&gt;&gt; Debian Package openvpn is installed.
-Version: 2.3.7-debian0
-
-&gt;&gt; Debian Package network-manager-openvpn-gnome is installed.
-Version: 0.9.8.2-1ubuntu4
-
-&gt;&gt; Debian Package nfs-kernel-server is installed.
-Version: 1:1.2.8-6ubuntu1.1
-
-&gt;&gt; Debian Package python-pip is installed.
-Version: 1.5.4-1ubuntu3
-
-&gt;&gt; Pulling existing repository /home/charney/.rbenv
-Ya está en «master»
-Your branch is up-to-date with 'origin/master'.
-Already up-to-date.
-
-&gt;&gt; Pulling existing repository /home/charney/.rbenv/plugins/ruby-build
-Ya está en «master»
-Your branch is up-to-date with 'origin/master'.
-Already up-to-date.
-
-&gt;&gt; Rbenv Ruby: 2.1.5
-
-&gt;&gt; Sublime: Sublime Text Build 3083
-
-&gt;&gt; Password Repository
-Already up-to-date.
-Counting objects: 7, done.
-Delta compression using up to 4 threads.
-Compressing objects: 100% (4/4), done.
-Writing objects: 100% (4/4), 1.41 KiB | 0 bytes/s, done.
-Total 4 (delta 2), reused 0 (delta 0)
-To git@y00.us:charney/strap.git
-   094699d..fcc924f  master -&gt; master
-
-Bundler version 1.9.6
-&gt;&gt; Harvest Command Line
-&gt;&gt; Pulling existing repository /home/charney/OpenSource/hcl
-Ya está en «master»
-Your branch is up-to-date with 'origin/master'.
-Already up-to-date.
-
-&gt;&gt; Outright Mental Platform
-
-&gt;&gt; Pulling existing repository /home/charney/Development/o2/platform
-Ya está en «master»
-Your branch is up-to-date with 'origin/master'.
-Already up-to-date.
-
-&gt;&gt; Open Source Development
-
-&gt;&gt; Cloning new repository /home/nick/OpenSource/developer-bootstrap
-Clonar en «developer-bootstrap»...
-remote: Counting objects: 7, done.
-remote: Compressing objects: 100% (7/7), done.
-remote: Total 7 (delta 1), reused 0 (delta 0), pack-reused 0
-Receiving objects: 100% (7/7), done.
-Resolving deltas: 100% (1/1), done.
-Checking connectivity... hecho.
-
-ping: unknown host signal
-&gt;&gt; SKIPPING Signal (Out of Network)
-
-                        --- 
-                     +        -- 
-                 --( /     \ )$$$$$$$$$$$$$ 
-             --$$$(   O   O  )$$$$$$$$$$$$$$$- 
-            /$$$(       U     )        $$$$$$$\ 
-          /$$$$$(              )--   $$$$$$$$$$$\ 
-         /$$$$$/ (      O     )   $$$$$$   \$$$$$\ 
-         $$$$$/   /            $$$$$$   \   \$$$$$---- 
-         $$$$$$  /          $$$$$$         \  ----  - 
- ---     $$$  /          $$$$$$      \           --- 
-   --  --  /      /\  $$$$$$            /     ---= 
-     +        /    $$$$$$              '--- $$$$$$ 
-       --\/$$$\ $$$$$$                      /$$$$$ 
-         \$$$$$$$$$                        /$$$$$/ 
-          \$$$$$$                         /$$$$$/ 
-            \$$$$$--  /                -- $$$$/ 
-             --$$$$$$$---------------  $$$$$-- 
-                \$$$$$$$$$$$$$$$$$$$$$$$$- 
-                  --$$$$$$$$$$$$$$$$$$-    
-
-&gt;&gt; Bootstrapped OK. Happy Coding!
-</code></pre>
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/outrightmental">outrightmental</a> can be found on <a href="https://github.com/outrightmental/strap">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-
+        </article>
+      </div>
     </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/outrightmental" class="avatar"><img src="https://avatars0.githubusercontent.com/u/503741?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/outrightmental">outrightmental</a> maintains <a href="https://github.com/outrightmental/strap">Strap</a></p>
 
-              <script type="text/javascript">
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/outrightmental/strap/tarball/master" class="tar">tar</a><a href="https://github.com/outrightmental/strap/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -276,5 +277,5 @@ ping: unknown host signal
             } catch(err) {}
           </script>
 
-  </body>
+</body>
 </html>
