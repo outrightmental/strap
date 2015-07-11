@@ -6,6 +6,8 @@ MANDIR ?= $(PREFIX)/share/man
 
 PLATFORMFILE := src/platform/$(shell uname | cut -d _ -f 1 | tr '[:upper:]' '[:lower:]').sh
 
+BUCKLES = $(sort $(wildcard src/buckle/*.sh))
+
 BASHCOMP_PATH ?= $(DESTDIR)$(PREFIX)/share/bash-completion/completions
 ZSHCOMP_PATH ?= $(DESTDIR)$(PREFIX)/share/zsh/site-functions
 FISHCOMP_PATH ?= $(DESTDIR)$(PREFIX)/share/fish/vendor_completions.d
