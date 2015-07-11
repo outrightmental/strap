@@ -17,17 +17,22 @@ RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 GOLD=$(tput setaf 3)
 BLUE=$(tput setaf 4)
+PURPLE=$(tput setaf 5)
 GRAY=$(tput setaf 7)
-BULLET=" $GREEN•$NORMAL"
-CHKBULLET=" $GREEN$BOLD✔$NORMAL"
-WARNBULLET=" $GOLD•$NORMAL"
-FAILBULLET=" $RED•$NORMAL"
-SUBULLET=" $GRAY-$NORMAL"
-NOBULLET="  "
+DIM=$(tput dim)
+
+# Bullets
+VBAR="$PURPLE$DIM│$NORMAL"
+BULLET="$GREEN•$NORMAL "
+CHKBULLET="$GREEN$BOLD✔$NORMAL "
+WARNBULLET="$GOLD•$NORMAL "
+FAILBULLET="$RED•$NORMAL "
+SUBULLET="$PURPLE├─$NORMAL "
+NOBULLET=""
 
 # Default Configuration
-strapconfig_begin_banner='        |\n   __|  __|   __|  _` |  __ \\\n \\__ \\  |    |    (   |  |   |\n ____/ \\__| _|   \__,_|  .__/\n                        _|'
-strapconfig_complete_banner="                        --- \n                     -        -- \n                 --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n             --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n            /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n          /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n         /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n         \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n         \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n ---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
+strapconfig_begin_banner="$VBAR        |\n$VBAR   __|  __|   __|  _\` |  __ \\ \n$VBAR \\__ \\  |    |    (   |  |   |\n$VBAR ____/ \\__| _|   \__,_|  .__/\n$VBAR                        _|"
+strapconfig_complete_banner="$VBAR                       --- \n$VBAR                    -        -- \n$VBAR                --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n$VBAR            --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n$VBAR           /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n$VBAR         /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n$VBAR        /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n$VBAR        \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n$VBAR        \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n ---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
 
 export GIT_DIR="${STRAP_GIT:-$PREFIX}/.git"
 export GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
@@ -55,7 +60,7 @@ yesno() {
     [[ $response == [yY] ]] || exit 1
 }
 space() {
-  printf '\n'
+  printf "$VBAR\n"
 }
 die() {
     echo "$@" >&2
@@ -86,22 +91,24 @@ parse_yaml() {
 repo_git() { # <targetPath> <moduleName> <repoUrl>
   REPODIR="$1/$2"
   if [ -d "$REPODIR" ]; then
-    printf "$SUBULLET Syncing existing repository $REPODIR\n"
+    printf "${NOBULLET}Syncing existing repository $BOLD$REPODIR$NORMAL\n"
+    printf "$DIM$PURPLE"
     git --git-dir="$REPODIR/.git" --work-tree="$REPODIR" checkout master || error "Failed to checkout master branch of git repo $REPODIR"
     git --git-dir="$REPODIR/.git" --work-tree="$REPODIR" pull || error "Failed to pull git repo $REPODIR"
+    printf "$NORMAL"
   else
-    printf "$SUBULLET Cloning new repository $1/$2\n"
+    printf "${NOBULLET}Cloning new repository $BOLD$REPODIR$NORMAL\n"
     if [ ! -d "$1" ]; then
-      printf "$SUBULLET Creating directory $1\n"
+      printf "${NOBULLET}Creating directory $BOLD$1$NORMAL\n"
       mkdir -p $1 || error "Failed to create directory $1"
     fi
- #   cd $1 && git clone $3 $2 || error "Failed to clone $3 $2 into $1"
+    (cd $1 && git clone $3 $2) || error "Failed to clone $3 $2 into $1"
   fi
   space
 }
 error() {
   if (( $# >= 1 )); then MSG="$1"; else MSG=""; fi
-  printf "$FAILBULLET Error! $MSG\n"
+  printf "${FAILBULLET}Error! $MSG\n"
   space
   if (( $# >= 2 )); then exit $2; else exit 1; fi
 }
@@ -115,11 +122,11 @@ error() {
 #
 prebuckle_whoami() {
   WHOAMI=$(whoami) || error "Must be logged in!"
-  printf "$BULLET hello ${BOLD}$WHOAMI$NORMAL\n"
+  printf "${BULLET}hello ${BOLD}$WHOAMI$NORMAL\n"
   sudo -v || error "Must be Sudoer!"
 }
 banner() {
-  printf "\n$1\n"
+  printf "$1\n"
 }
 buckleup() {
   local bfile="$1"
@@ -135,9 +142,9 @@ buckle_dpkg() {
   dpkg -s $dpkg_name > $tmpfile
   local dpkg_version=$(cat $tmpfile | grep -i ^version | sed -e 's/version: \(.*\)/\1/gi' )
   if grep -i -q '^status.*installed' $tmpfile; then
-    printf "$NOBULLET $BLUE$dpkg_name$NORMAL $dpkg_version\n"
+    printf "${SUBULLET}$BLUE$dpkg_name$NORMAL $dpkg_version\n"
   else
-    printf "$NOBULLET $GOLD$dpkg_name$NORMAL\n"
+    printf "${SUBULLET}$GOLD$dpkg_name$NORMAL\n"
     sudo apt-get install $dpkg_name
   fi
   rm $tmpfile
@@ -148,13 +155,15 @@ buckle_pass() {
   pass version > $tmpfile
   local pass_version=$(cat $tmpfile | grep -i ' v[0-9\.]* ' | sed -e 's/.* v\([0-9\.]\+\) .*/\1/gi')
   if grep -i -q ' v[0-9\.]* ' $tmpfile; then
-    printf "$NOBULLET ${BLUE}pass$NORMAL v$pass_version\n"
+    printf "${SUBULLET}${BLUE}pass$NORMAL v$pass_version\n"
   else
-    printf "$NOBULLET ${RED}pass$NORMAL\n"
+    printf "${SUBULLET}${RED}pass$NORMAL\n"
     error "Please manually install ${BOLD}pass$NORMAL"
   fi
+  printf "$DIM$PURPLE"
   pass git pull
   pass git push
+  printf "$NORMAL"
 }
 buckle_rbenv() {
   eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
@@ -162,12 +171,12 @@ buckle_rbenv() {
   rbenv version > $tmpfile
   local rbenv_version=$(cat $tmpfile | grep -i '^[0-9\.]* ' | sed -e 's/.* v\([0-9\.]\+\) .*/\1/gi')
   if grep -i -q '^[0-9\.]* ' $tmpfile; then
-    printf "$NOBULLET ${BLUE}rbenv$NORMAL v$rbenv_version\n"
+    printf "${SUBULLET}${BLUE}rbenv$NORMAL v$rbenv_version\n"
   elif [[ "$OSTYPE" == "linux"* ]]; then
     repo_git ~ .rbenv https://github.com/sstephenson/rbenv.git
     repo_git ~/.rbenv/plugins ruby-build https://github.com/sstephenson/ruby-build.git
   else
-    printf "$NOBULLET ${RED}rbenv$NORMAL\n"
+    printf "${SUBULLET}${RED}rbenv$NORMAL\n"
     error "Please manually install ${BOLD}rbenv$NORMAL"
   fi
 }
@@ -177,7 +186,7 @@ buckle_repo() {
   if [ -z $buckledata_url ]; then error "$BOLD$2$NORMAL must have a ${BOLD}url:$NORMAL"; fi
   if [ -z $buckledata_clone_as ]; then error "$BOLD$2$NORMAL must have a ${BOLD}clone_as:$NORMAL"; fi
   if [ -z $buckledata_parent_path ]; then error "$BOLD$2$NORMAL must have a ${BOLD}parent_path:$NORMAL"; fi
-  printf "$NOBULLET ${BLUE}$buckledata_url$NORMAL\n"
+  printf "${SUBULLET}${BLUE}$buckledata_url$NORMAL\n"
   if [ $buckledata_vcs == 'git' ]; then
     repo_git $buckledata_parent_path $buckledata_clone_as $buckledata_url
   else
@@ -395,10 +404,10 @@ cmd_up() {
     do
       strapvalue="strapconfig_straps_$eachstrap"
       if eval ${!strapvalue} >> /dev/null; then
-        printf "$CHKBULLET $BOLD$eachstrap$NORMAL\n"
+        printf "${CHKBULLET}$BOLD$eachstrap$NORMAL\n"
         straplist="$straplist $eachstrap"
       else
-        printf "$WARNBULLET no $eachstrap$NORMAL\n"
+        printf "${WARNBULLET}no $eachstrap$NORMAL\n"
       fi
       space
     done
@@ -420,7 +429,8 @@ cmd_up() {
     for upstrap in $straplist
     do
       strapregex="^.*/$upstrap/.*$"
-      printf "$BULLET Strap $BOLD$GREEN$upstrap$NORMAL...\n"
+      printf "${BULLET}Strap $BOLD$GREEN$upstrap$NORMAL...\n"
+      space
       for file in `find "$PREFIX/$path" -type f -path "$PREFIX/.git" -prune -o -name '*.sh.yml'`
       do
         if [[ $file =~ $strapregex ]]; then
@@ -431,8 +441,7 @@ cmd_up() {
       space
     done
     banner "$strapconfig_complete_banner"
-    printf "$CHKBULLET ${BOLD}Strapped$NORMAL. Happy Coding!\n"
-    space
+    printf "${CHKBULLET}${BOLD}Strapped$NORMAL. Happy Coding!\n\n"
   elif [[ -z $path ]]; then
     die "Error: strap configuration is empty. Try \"strap init\"."
   else
