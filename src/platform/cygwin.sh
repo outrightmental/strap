@@ -1,4 +1,4 @@
-# Copyright (C) 2014 Outright Mental Inc. <hiya@outright.io>. All Rights Reserved.
+# Copyright (C) 2015 Outright Mental Inc. <hiya@outright.io>. All Rights Reserved.
 # This file is licensed under the GPLv2+. Please see COPYING for more information.
 
 clip() {

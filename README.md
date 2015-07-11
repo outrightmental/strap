@@ -19,53 +19,13 @@ Depends on:
   http://www.kernel.org/pub/linux/utils/util-linux/
   http://software.frodo.looijaard.name/getopt/
 
-# Installation
-
-From within a bash terminal:
-
-    mkdir -p ~/OpenSource/ && cd ~/OpenSource
-    git clone git@github.com:outrightmental/strap.git
-    cd strap && sudo make install
-
-If it's your first time running Strap, initialize a new strap configuration:
-
-    strap init
-
-This will create a folder `.strap` within your home folder. In order to activate the git-repo-synchronization feature of Strap, simply make that `~/.strap/` folder a git repository pointing to your origin repository of choice and Strap will take care of the rest.
-
 # Usage
 
 When you are ready to begin a working session, start by bootstrapping your local developer machine simply with:
 
     strap
 
-# Components
-
-Platform-agnostic components are:
-
-+ user (whoami & group)
-+ options (what sections to run? input/auto)
-+ touchsudo
-+ ssh (test, config, install credentials)
-+ openvpn (install credentials)
-+ profile (bash_profile)
-+ strap
-+ tmux
-+ repository (git, sync all repos)
-+ harvest (hcl, aliases)
-+ systempackage
-+ ruby (and rbenv, bundle)
-+ nodejs (and npm)
-+ python (and pip)
-+ go
-+ mysql (server, client, libs)
-+ mongo (server)
-+ redis (server, tools)
-+ sublime (v3)
-
-# Example
-
-    $ strap
+Which automatically straps up all the "buckles" for your workstation like so:
     
     >> User: charney
     
@@ -186,3 +146,116 @@ Platform-agnostic components are:
                       --$$$$$$$$$$$$$$$$$$-    
     
     >> Bootstrapped OK. Happy Coding!
+
+# Installation
+
+From within a bash terminal:
+
+    mkdir -p ~/OpenSource/ && cd ~/OpenSource
+    git clone git@github.com:outrightmental/strap.git
+    cd strap && sudo make install
+
+If it's your first time running Strap, initialize a new strap configuration:
+
+    strap init
+
+This will create a folder `.strap` within your home folder, with a blank `config.sh.yml` file inside.
+
+# Configuration
+
+Edit the configuration with:
+    
+    strap edit config
+
+This will open the configuration in your editor of choice, probably `vi` by default. *(If you prefer to use a different editor, just set environment variable `EDITOR`, e.g. `export EDITOR=nano` in your `.bash_profile`)*
+
+Available Strap configuration options are:
+
++ `straps` containing straps, each of which evaluates a command in order to decide whether that strap will be included in the current run.
++ `begin` containing options about the beginning of a run.
+
+Here's an example of a fully configured `strap edit config`:
+
+    straps:
+      o2: ping -c1 code.outright.io
+      bt: ping -c1 gitlab01dv1
+      gh: ping -c1 github.com
+      base: echo
+    begin:
+      banner: "Hello World!"
+
+## Git Sync
+
+In order to activate the git-repo-synchronization features of Strap, use `strap git <command>` to initialize a git repository from the internal buckle storage folder pointing to your origin repository of choice:
+
+    strap git init
+    strap git remote add origin git@github.com:charneykaye/strap.git
+    strap git push origin master -u
+
+# Buckles
+
+In its simplest form, a buckle is a pointer to a "type" meaning a Prototype of something that you want to strap up on your workstation.
+
+The fastest way to add a new one is with `strap insert <path>`:
+
+    strap insert base/passwordstore
+    
+      > mkdir: created directory «/home/nick/.strap/base»
+      > Enter buckle YAML for base/passwordstore:
+    
+    type: pass
+    
+      > [master 212eca8] Add given buckle for base/passwordstore to store.
+      >  1 file changed, 1 insertion(+)
+      >  create mode 100644 base/passwordstore.sh.yml
+
+It's also possible to add a multiline buckle with `strap insert -m <path>`:
+
+    strap insert -m github/passwords
+    
+      > Enter buckle YAML for github/passwords and press Ctrl+D when finished:
+    
+    type: repo
+    url: git@github.com:charneykaye/pass.git
+    clone_as: .password-store
+    parent_path: $HOME
+    
+      > [master 4f0410f] Add given buckle for o2/passwords to store.
+      > 1 file changed, 1 insertion(+)
+      > create mode 100644 o2/pass.sh.yml
+
+Inside of our `ubuntu` strap we might keep (for example) a buckle to ensure that VirtualBox is installed on a Debian linux workstation. We could call this `ubuntu/virtualbox` and it would be run automatically with the `ubuntu` strap  **because the strap name is found within the buckle path**.
+
+    type: dpkg
+    name: virtualbox
+
+# Types
+
+Currently shipped:
+
++ whoami (get user and touch sudo)
++ dpkg (debian packages)
+
+To do:
+
++ repo (git, sync all repos)
++ pass (password store)
++ profile (bash_profile)
++ options (what sections to run? input/auto)
++ ssh (test, config, install credentials)
++ openvpn (install credentials)
++ tmux
++ harvest (hcl, aliases)
++ rbtools (review board)
++ sublime (v3)
++ nginx
++ ruby (and rbenv, bundle)
++ nodejs (and npm)
++ python (and pip)
++ go
++ java
++ mysql (server, client, libs)
++ mongo (server)
++ redis (server, tools)
+
+# Example

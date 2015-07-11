@@ -10,4 +10,6 @@ test_expect_success 'Test "insert" command' '
 	[[ $("$STRAP" show cred1) == "Hello world" ]]
 '
 
+# TODO: test insert multiline
+
 test_done

@@ -5,18 +5,18 @@ strap - one command to start your day
 
 .SH SYNOPSIS
 .B strap
-[ 
+[
 .I COMMAND
-] [ 
+] [
 .I OPTIONS
-]... [ 
+]... [
 .I ARGS
 ]...
 
 .SH DESCRIPTION
 
 .B strap
-will bootstrap your developer workstation at the start of the day, self-updating (via git repository) its configuration files inside a simple directory tree residing at 
+will bootstrap your developer workstation at the start of the day, self-updating (via git repository) its configuration files inside a simple directory tree residing at
 .IR ~/.strap .
 The
 .B strap
@@ -24,12 +24,9 @@ utility provides a series of commands for manipulating the strap configuration,
 allowing the user to add, remove, edit, synchronize, and manipulate
 buckles.
 
-If no COMMAND is specified, COMMAND defaults to either
-.B show
-or
-.BR ls ,
-depending on the type of specifier in ARGS. Otherwise COMMAND must be one of
-the valid commands listed below.
+If no COMMAND is specified, COMMAND defaults to
+.B up
+Otherwise COMMAND must be one of the valid commands listed below.
 
 Several of the commands below rely on or provide additional functionality if
 the strap configuration directory is also a git repository. If the strap configuration
@@ -49,7 +46,7 @@ buckle names in
 .SH COMMANDS
 
 .TP
-\fBinit\fP [ \fI--path=sub-folder\fP, \fI-p sub-folder\fP ] 
+\fBinit\fP [ \fI--path=sub-folder\fP, \fI-p sub-folder\fP ]
 Initialize new buckle storage a.k.a. strap configuration. This command must be run first before a buckle
 store can be used.
 .TP
@@ -60,6 +57,11 @@ by using the
 .BR tree (1)
 program. This command is alternatively named \fBlist\fP.
 .TP
+\fBfind\fP \fIbuckle-names\fP...
+List names of buckles inside the tree that match \fIbuckle-names\fP by using the
+.BR tree (1)
+program. This command is alternatively named \fBsearch\fP.
+.TP
 \fBgrep\fP \fIsearch-string\fP
 Searches inside each decrypted buckle file for \fIsearch-string\fP, and displays line
 containing matched string along with filename. Uses
@@ -67,8 +69,11 @@ containing matched string along with filename. Uses
 for matching. Make use of the \fIGREP_OPTIONS\fP environment variable to set particular
 options.
 .TP
+\fBup\fP \fIbuckle-name\fP
+Straps up a buckle named \fIbuckle-name\fP, or (if none specified) straps up all buckles.
+.TP
 \fBshow\fP [ \fI--clip\fP, \fI-c\fP ] \fIbuckle-name\fP
-Decrypt and print a buckle named \fIbuckle-name\fP. If \fI--clip\fP or \fI-c\fP
+Print a buckle named \fIbuckle-name\fP. If \fI--clip\fP or \fI-c\fP
 is specified, do not print the buckle but instead copy the first line to the
 clipboard using
 .BR xclip (1)
@@ -95,7 +100,7 @@ the ordinary \fITMPDIR\fP location, and print a warning.
 \fBrm\fP [ \fI--recursive\fP, \fI-r\fP ] [ \fI--force\fP, \fI-f\fP ] \fIbuckle-name\fP
 Remove the buckle named \fIbuckle-name\fP from the strap configuration. This command is
 alternatively named \fBremove\fP or \fBdelete\fP. If \fI--recursive\fP or \fI-r\fP
-is specified, delete strap-name recursively if it is a directory. If \fI--force\fP
+is specified, delete buckle-name recursively if it is a directory. If \fI--force\fP
 or \fI-f\fP is specified, do not interactively prompt before removal.
 .TP
 \fBmv\fP [ \fI--force\fP, \fI-f\fP ] \fIold-path\fP \fInew-path\fP
@@ -132,95 +137,113 @@ Show version information.
 
 .TP
 Initialize strap configuration
-.B charney@laptop ~ $ strap init charney@outright.io 
+.B charney@laptop ~ $ strap init charney@outright.io
 .br
-mkdir: created directory \[u2018]/home/charney/.strap\[u2019] 
+mkdir: created directory \[u2018]/home/charney/.strap\[u2019]
 .br
 Strap initialized for charney@outright.io.
 .TP
 List existing buckles in store
-.B charney@laptop ~ $ strap 
+.B charney@laptop ~ $ strap
 .br
 Strap
 .br
-\[u251C]\[u2500]\[u2500] Business 
+\[u251C]\[u2500]\[u2500] Business
 .br
-\[u2502]   \[u251C]\[u2500]\[u2500] some-silly-business-site.com 
+\[u2502]   \[u251C]\[u2500]\[u2500] some-silly-business-site.com
 .br
-\[u2502]   \[u2514]\[u2500]\[u2500] another-business-site.net 
+\[u2502]   \[u2514]\[u2500]\[u2500] another-business-site.net
 .br
-\[u251C]\[u2500]\[u2500] Email 
+\[u251C]\[u2500]\[u2500] Email
 .br
-\[u2502]   \[u251C]\[u2500]\[u2500] outright.io 
+\[u2502]   \[u251C]\[u2500]\[u2500] outright.io
 .br
-\[u2502]   \[u2514]\[u2500]\[u2500] outright.io 
+\[u2502]   \[u2514]\[u2500]\[u2500] outright.io
 .br
-\[u2514]\[u2500]\[u2500] France 
+\[u2514]\[u2500]\[u2500] France
 .br
-    \[u251C]\[u2500]\[u2500] bank 
+    \[u251C]\[u2500]\[u2500] bank
 .br
-    \[u251C]\[u2500]\[u2500] freebox 
+    \[u251C]\[u2500]\[u2500] freebox
 .br
-    \[u2514]\[u2500]\[u2500] mobilephone  
+    \[u2514]\[u2500]\[u2500] mobilephone
 .br
 
 .br
 Alternatively, "\fBstrap ls\fP".
 
 .TP
-Show existing buckle
-.B charney@laptop ~ $ strap Email/outright.io 
+Find existing buckles in store that match .io
+.B charney@laptop ~ $ strap find .io
 .br
-sup3rh4x3rizmynam3 
+Search Terms: .io
+.br
+\[u251C]\[u2500]\[u2500] Business
+.br
+\[u2502]   \[u251C]\[u2500]\[u2500] some-silly-business-site.com
+.br
+\[u2514]\[u2500]\[u2500] Email
+.br
+    \[u251C]\[u2500]\[u2500] outright.io
+.br
+
+.br
+Alternatively, "\fBstrap search .io\fP".
+
+.TP
+Show existing buckle
+.B charney@laptop ~ $ strap Email/outright.io
+.br
+sup3rh4x3rizmynam3
 .TP
 Copy existing buckle to clipboard
-.B charney@laptop ~ $ strap -c Email/outright.io 
+.B charney@laptop ~ $ strap -c Email/outright.io
 .br
 Copied Email/hiya@outright.io to clipboard. Will clear in 45 seconds.
 .TP
 Add buckle to store
-.B charney@laptop ~ $ strap insert Business/cheese-whiz-factory 
+.B charney@laptop ~ $ strap insert Business/cheese-whiz-factory
 .br
 Enter buckle for Business/cheese-whiz-factory: omg so much cheese what am i gonna do
 .TP
-Add multiline buckle to store 
-.B charney@laptop ~ $ strap insert -m Business/cheese-whiz-factory 
+Add multiline buckle to store
+.B charney@laptop ~ $ strap insert -m Business/cheese-whiz-factory
 .br
-Enter contents of Business/cheese-whiz-factory and press Ctrl+D when finished: 
+Enter contents of Business/cheese-whiz-factory and press Ctrl+D when finished:
 .br
- 
+
 .br
-Hey this is my 
+Hey this is my
 .br
-awesome 
+awesome
 .br
-multi 
+multi
 .br
-line 
+line
 .br
-buckleeeeee. 
+buckleeeeee.
 .br
-^D 
+^D
 .TP
 Remove buckle from store
-.B charney@laptop ~ $ strap remove Business/cheese-whiz-factory 
+.B charney@laptop ~ $ strap remove Business/cheese-whiz-factory
 .br
-rm: remove regular file \[u2018]/home/charney/.strap/Business/cheese-whiz-factory.yml\[u2019]? y 
+rm: remove regular file \[u2018]/home/charney/.strap/Business/cheese-whiz-factory.sh.yml\[u2019]? y
 .br
-removed \[u2018]/home/charney/.strap/Business/cheese-whiz-factory.yml\[u2019]
+removed \[u2018]/home/charney/.strap/Business/cheese-whiz-factory.sh.yml\[u2019]
 
 .SH EXTENDED GIT EXAMPLE
 Here, we initialize new strap configuration, create a git repository, and then manipulate and sync buckles. Make note of the arguments to the first call of \fBstrap git push\fP; consult
 .BR git-push (1)
 for more information.
 
-.B charney@laptop ~ $ strap init hiya@outright.io 
+.B charney@laptop ~ $ strap init hiya@outright.io
 .br
-mkdir: created directory \[u2018]/home/charney/.strap\[u2019] 
+mkdir: created directory \[u2018]/home/charney/.strap\[u2019]
 .br
-Strap initialized for hiya@outright.io. 
+Strap initialized for hiya@outright.io.
 
-.B charney@laptop ~ $ strap git init 
+.B charney@laptop ~ $ strap git init
 .br
 Initialized empty Git repository in /home/charney/.strap/.git/
 .br
@@ -228,73 +251,73 @@ Initialized empty Git repository in /home/charney/.strap/.git/
 .br
  1 file changed, 1 insertion(+)
 .br
- create mode 100644 config
+ create mode 100644 config.sh.yml
 
-.B charney@laptop ~ $ strap git remote add origin kexec.com:strap-store 
+.B charney@laptop ~ $ strap git remote add origin kexec.com:strap-store
 
 .B charney@laptop ~ $ strap edit Amazon/amazonemail@email.com
 .br
-mkdir: created directory \[u2018]/home/charney/.strap/Amazon\[u2019] 
+mkdir: created directory \[u2018]/home/charney/.strap/Amazon\[u2019]
 .br
 [master 30fdc1e] Added buckle for Amazon/amazonemail@email.com to store.
 .br
-1 file changed, 0 insertions(+), 0 deletions(-) 
+1 file changed, 0 insertions(+), 0 deletions(-)
 .br
-create mode 100644 Amazon/amazonemail@email.com.yml 
+create mode 100644 Amazon/amazonemail@email.com.sh.yml
 .br
 .B charney@laptop ~ $ strap git push -u --all
 .br
-Counting objects: 4, done. 
+Counting objects: 4, done.
 .br
-Delta compression using up to 2 threads. 
+Delta compression using up to 2 threads.
 .br
-Compressing objects: 100% (3/3), done. 
+Compressing objects: 100% (3/3), done.
 .br
-Writing objects: 100% (4/4), 921 bytes, done. 
+Writing objects: 100% (4/4), 921 bytes, done.
 .br
-Total 4 (delta 0), reused 0 (delta 0) 
+Total 4 (delta 0), reused 0 (delta 0)
 .br
-To kexec.com:strap-store 
+To kexec.com:strap-store
 .br
-* [new branch]      master -> master 
+* [new branch]      master -> master
 .br
-Branch master set up to track remote branch master from origin. 
+Branch master set up to track remote branch master from origin.
 
-.B charney@laptop ~ $ strap insert Amazon/otheraccount@email.com 
+.B charney@laptop ~ $ strap insert Amazon/otheraccount@email.com
 .br
-Enter buckle for Amazon/otheraccount@email.com: som3r3a11yb1gp4ssw0rd!!88** 
+Enter buckle for Amazon/otheraccount@email.com: som3r3a11yb1gp4ssw0rd!!88**
 .br
-[master b9b6746] Added given buckle for Amazon/otheraccount@email.com to store. 
+[master b9b6746] Added given buckle for Amazon/otheraccount@email.com to store.
 .br
-1 file changed, 0 insertions(+), 0 deletions(-) 
+1 file changed, 0 insertions(+), 0 deletions(-)
 .br
-create mode 100644 Amazon/otheraccount@email.com.yml 
+create mode 100644 Amazon/otheraccount@email.com.sh.yml
 
-.B charney@laptop ~ $ strap rm Amazon/amazonemail@email.com 
+.B charney@laptop ~ $ strap rm Amazon/amazonemail@email.com
 .br
-rm: remove regular file \[u2018]/home/charney/.strap/Amazon/amazonemail@email.com.yml\[u2019]? y 
+rm: remove regular file \[u2018]/home/charney/.strap/Amazon/amazonemail@email.com.sh.yml\[u2019]? y
 .br
-removed \[u2018]/home/charney/.strap/Amazon/amazonemail@email.com.yml\[u2019] 
+removed \[u2018]/home/charney/.strap/Amazon/amazonemail@email.com.sh.yml\[u2019]
 .br
-rm 'Amazon/amazonemail@email.com.yml' 
+rm 'Amazon/amazonemail@email.com.sh.yml'
 .br
-[master 288b379] Removed Amazon/amazonemail@email.com from store. 
+[master 288b379] Removed Amazon/amazonemail@email.com from store.
 .br
-1 file changed, 0 insertions(+), 0 deletions(-) 
+1 file changed, 0 insertions(+), 0 deletions(-)
 .br
-delete mode 100644 Amazon/amazonemail@email.com.yml 
+delete mode 100644 Amazon/amazonemail@email.com.sh.yml
 
 .B charney@laptop ~ $ strap git push
 .br
-Counting objects: 9, done. 
+Counting objects: 9, done.
 .br
-Delta compression using up to 2 threads. 
+Delta compression using up to 2 threads.
 .br
-Compressing objects: 100% (5/5), done. 
+Compressing objects: 100% (5/5), done.
 .br
-Writing objects: 100% (7/7), 1.25 KiB, done. 
+Writing objects: 100% (7/7), 1.25 KiB, done.
 .br
-Total 7 (delta 0), reused 0 (delta 0) 
+Total 7 (delta 0), reused 0 (delta 0)
 .br
 To kexec.com:strap-store
 
