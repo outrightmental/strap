@@ -87,8 +87,8 @@ repo_git() { # <targetPath> <moduleName> <repoUrl>
   REPODIR="$1/$2"
   if [ -d "$REPODIR" ]; then
     printf "$SUBULLET Syncing existing repository $REPODIR\n"
-    [[ -n $(cd $REPODIR && git checkout master) ]] || error "Failed to checkout master branch of git repo $1"
-    [[ -n $(cd $REPODIR && git pull) ]] || error "Failed to pull repository $1/$2"
+    git --git-dir="$REPODIR/.git" --work-tree="$REPODIR" checkout master || error "Failed to checkout master branch of git repo $REPODIR"
+    git --git-dir="$REPODIR/.git" --work-tree="$REPODIR" pull || error "Failed to pull git repo $REPODIR"
   else
     printf "$SUBULLET Cloning new repository $1/$2\n"
     if [ ! -d "$1" ]; then
