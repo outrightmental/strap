@@ -140,8 +140,7 @@ It's also possible to add a multiline buckle with `strap insert -m <path>`:
     
     type: repo
     url: git@github.com:charneykaye/pass.git
-    clone_as: .password-store
-    parent_path: $HOME
+    path: $HOME/.password-store
     
       > [master 4f0410f] Add given buckle for o2/passwords to store.
       > 1 file changed, 1 insertion(+)
