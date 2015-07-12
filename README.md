@@ -4,7 +4,7 @@
 
 **One command to start your day.**
 
-Bootstrap a developer workstation at the start of the day by running one command that self-updates its configuration from a git repository.
+Workstation management should be simple and follow [Unix philosophy](http://en.wikipedia.org/wiki/Unix_philosophy). Bootstrap a developer workstation at the start of the day by running one command that self-updates its configuration from a git repository.
 
 Helps to make our own physical workstation more ephemeral, enabling work on multiple workstations and recovery when one is lost or compromised.
 
@@ -186,4 +186,4 @@ To do:
 
 This project created and spearheaded by [Charney Kaye](http://w.charney.io) of [Outright Mental Inc.](http://w.outright.io).
 
-Code originated as a fork of [pass](http://passwordstore.org) a utility which is truly the light at the end of a long dark tunnel of less worthy password management options. `pass` is a bastion of the UNIX philosophy and we could only hope to be as mighty in our effort. Thanks be!
+Code originated as a fork of [pass](http://passwordstore.org) a utility which is truly the light at the end of a long dark tunnel of less worthy password management options. `pass` is a bastion of Unix philosophy and we could only hope to be as mighty in our effort. Thanks be!
