@@ -181,3 +181,9 @@ To do:
 + mysql (server, client, libs)
 + mongo (server)
 + redis (server, tools)
+
+# Credit
+
+This project created and spearheaded by [Charney Kaye](http://w.charney.io) of [Outright Mental Inc.](http://w.outright.io).
+
+Code originated as a fork of [pass](http://passwordstore.org) a utility which is truly the light at the end of a long dark tunnel of less worthy password management options. `pass` is a bastion of the UNIX philosophy and we could only hope to be as mighty in our effort. Thanks be!
