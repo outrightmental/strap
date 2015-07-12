@@ -66,7 +66,7 @@ Which automatically straps up all the "buckles" for your workstation:
        tmux 1.8-5
        git 1:1.9.1-1ubuntu0.1
 
-And so on, and so forth.. This is a scaffold for *your* personal optimal configuration, to make the workstation itself ephemeral.
+And so on, and so forth.. This is a scaffold for *your* personal configuration. Our design principle is **Ephemerality = Resilience = Usefulness**
 
 # Installation
 
