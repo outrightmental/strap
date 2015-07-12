@@ -23,16 +23,20 @@ DIM=$(tput dim)
 
 # Bullets
 VBAR="$PURPLE$DIM│$NORMAL"
+HBAR="$PURPLE$DIM─$NORMAL"
+BLCORNER="$PURPLE$DIM└$NORMAL"
+TLCORNER="$PURPLE$DIM┌$NORMAL"
 BULLET="$GREEN•$NORMAL "
 CHKBULLET="$GREEN$BOLD✔$NORMAL "
 WARNBULLET="$GOLD•$NORMAL "
 FAILBULLET="$RED•$NORMAL "
 SUBULLET="$PURPLE├─$NORMAL "
+EMPTYBULLET="$VBAR "
 NOBULLET=""
 
 # Default Configuration
 strapconfig_begin_banner="$VBAR        |\n$VBAR   __|  __|   __|  _\` |  __ \\ \n$VBAR \\__ \\  |    |    (   |  |   |\n$VBAR ____/ \\__| _|   \__,_|  .__/\n$VBAR                        _|"
-strapconfig_complete_banner="$VBAR                       --- \n$VBAR                    -        -- \n$VBAR                --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n$VBAR            --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n$VBAR           /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n$VBAR         /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n$VBAR        /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n$VBAR        \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n$VBAR        \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n ---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
+strapconfig_complete_banner="$VBAR                       --- \n$VBAR                    -        -- \n$VBAR                --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n$VBAR            --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n$VBAR           /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n$VBAR         /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n$VBAR        /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n$VBAR        \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n$VBAR        \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n$BLCORNER---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
 
 export STRAP_GIT_DIR="${STRAP_GIT:-$PREFIX}/.git"
 export STRAP_GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
@@ -40,20 +44,50 @@ export STRAP_GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
 #
 # BEGIN helper functions
 #
-git_do() {
-
+git_clone() { # <path-of-new-repo> <origin-url>
+  local repopath=$1
+  local originurl=$2
+  if git_exists "$repopath"; then false; fi
+  return $(git clone "$originurl" "$repopath")
 }
-git_add_file() {
-  [[ -d $STRAP_GIT_DIR ]] || return
-  git add "$1" || return
-  [[ -n $(git status --porcelain "$1") ]] || return
-  git_commit "$2"
+git_exists() { # <path-of-existing-repo>
+  local gitdirpath="$1/.git"
+  [[ -d $gitdirpath ]] || false
 }
-git_commit() {
+git_do() { # <path-of-existing-repo> <pass-through-everything-else>
+  local repopath=$1
+  git_exists "$repopath" || false
+  (cd "$repopath" && git $2 $3 $4 $5 $6 $7 $8 $9)
+}
+git_buckleup() { # <path> <url>
+  local repopath="$1"
+  local repourl="$2"
+  if git_exists "$repopath"; then
+    printf "${NOBULLET}Syncing existing repository $BOLD$repopath$NORMAL\n"
+    printf "$DIM$PURPLE"
+    git_do "$repopath" checkout master || error "Failed to checkout master branch of git repo $repopath"
+    git_do "$repopath" pull || error "Failed to pull git repo $repopath"
+    printf "$NORMAL"
+  else
+    printf "${NOBULLET}Cloning new repository $BOLD$repopath$NORMAL\n"
+    if [ ! -d "$repopath" ]; then
+      printf "${NOBULLET}Creating directory $BOLD$repopath$NORMAL\n"
+      mkdir -p "$repopath" || error "Failed to create path to $repopath"
+    fi
+    rm -fr "$repopath" || error "Failed to clear path $repopath"
+    git_clone "$repopath" "$repourl" || error "Failed to clone $repourl into $repopath"
+  fi
+  space
+}
+strapconfig_git_add_file() {
+  git_do "$STRAP_GIT_WORK_TREE" add "$1" || return
+  [[ -n $(git_do "$STRAP_GIT_WORK_TREE" status --porcelain "$1") ]] || return
+  strapconfig_git_commit "$2"
+}
+strapconfig_git_commit() {
   local sign=""
-  [[ -d $STRAP_GIT_DIR ]] || return
-  [[ $(git config --bool --get strap.signcommits) == "true" ]] && sign="-S"
-  git commit $sign -m "$1"
+  [[ $(git_do "$STRAP_GIT_WORK_TREE"  config --bool --get strap.signcommits) == "true" ]] && sign="-S"
+  git_do "$STRAP_GIT_WORK_TREE"  commit $sign -m "$1"
 }
 yesno() {
   [[ -t 0 ]] || return 0
@@ -89,24 +123,6 @@ parse_yaml() {
       printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
     }
   }'
-}
-repo_git() { # <targetPath> <moduleName> <repoUrl>
-  REPODIR="$1/$2"
-  if [ -d "$REPODIR" ]; then
-    printf "${NOBULLET}Syncing existing repository $BOLD$REPODIR$NORMAL\n"
-    printf "$DIM$PURPLE"
-    git --git-dir="$REPODIR/.git" --work-tree="$REPODIR" checkout master || error "Failed to checkout master branch of git repo $REPODIR"
-    git --git-dir="$REPODIR/.git" --work-tree="$REPODIR" pull || error "Failed to pull git repo $REPODIR"
-    printf "$NORMAL"
-  else
-    printf "${NOBULLET}Cloning new repository $BOLD$REPODIR$NORMAL\n"
-    if [ ! -d "$1" ]; then
-      printf "${NOBULLET}Creating directory $BOLD$1$NORMAL\n"
-      mkdir -p $1 || error "Failed to create directory $1"
-    fi
-    (cd $1 && git clone $3 $2) || error "Failed to clone $3 $2 into $1"
-  fi
-  space
 }
 error() {
   if (( $# >= 1 )); then MSG="$1"; else MSG=""; fi
@@ -175,8 +191,8 @@ buckle_rbenv() {
   if grep -i -q '^[0-9\.]* ' $tmpfile; then
     printf "${SUBULLET}${BLUE}rbenv$NORMAL v$rbenv_version\n"
   elif [[ "$OSTYPE" == "linux"* ]]; then
-    repo_git ~ .rbenv https://github.com/sstephenson/rbenv.git
-    repo_git ~/.rbenv/plugins ruby-build https://github.com/sstephenson/ruby-build.git
+    git_buckleup $HOME/.rbenv https://github.com/sstephenson/rbenv.git
+    git_buckleup $HOME/.rbenv/plugins/ruby-build https://github.com/sstephenson/ruby-build.git
   else
     printf "${SUBULLET}${RED}rbenv$NORMAL\n"
     error "Please manually install ${BOLD}rbenv$NORMAL"
@@ -186,11 +202,10 @@ buckle_repo() {
   eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
   if [ -z $buckledata_vcs ]; then $buckledata_vcs='git'; fi
   if [ -z $buckledata_url ]; then error "$BOLD$2$NORMAL must have a ${BOLD}url:$NORMAL"; fi
-  if [ -z $buckledata_clone_as ]; then error "$BOLD$2$NORMAL must have a ${BOLD}clone_as:$NORMAL"; fi
-  if [ -z $buckledata_parent_path ]; then error "$BOLD$2$NORMAL must have a ${BOLD}parent_path:$NORMAL"; fi
+  if [ -z $buckledata_path ]; then error "$BOLD$2$NORMAL must have a ${BOLD}path:$NORMAL"; fi
   printf "${SUBULLET}${BLUE}$buckledata_url$NORMAL\n"
   if [ $buckledata_vcs == 'git' ]; then
-    repo_git $buckledata_parent_path $buckledata_clone_as $buckledata_url
+    git_buckleup $buckledata_path $buckledata_url
   else
     error "Strap does not support vcs $BOLD$buckledata_vcs"
   fi
@@ -347,19 +362,19 @@ cmd_init() {
   if [[ $# -eq 1 && -z $1 ]]; then
     [[ ! -f "$config_file" ]] && die "Error: $config_file does not exist and so cannot be removed."
     rm -v -f "$config_file" || exit 1
-    if [[ -d $STRAP_GIT_DIR ]]; then
-      git rm -qr "$config_file"
-      git_commit "Deinitialize ${config_file}."
+    if git_exists "$STRAP_GIT_WORK_TREE"; then
+      git_do "$STRAP_GIT_WORK_TREE" rm -qr "$config_file"
+      strapconfig_git_commit "Deinitialize ${config_file}."
     fi
     rmdir -p "${config_file%/*}" 2>/dev/null
   else
     mkdir -v -p "$PREFIX/$id_path"
     printf "%s\n" "$@" > "$config_file"
     echo "Strap initialized."
-    git_add_file "$config_file" "Added strap config_file file."
+    strapconfig_git_add_file "$config_file" "Added strap config_file file."
   fi
 
-  git_add_file "$PREFIX/$id_path" "Added new strap configuration."
+  strapconfig_git_add_file "$PREFIX/$id_path" "Added new strap configuration."
 }
 
 cmd_up() {
@@ -543,7 +558,7 @@ cmd_insert() {
       read -r -p "Enter buckle YAML for $path: " -e buckle || exit 1
       echo "$buckle" > "$bucklefile"
   fi
-  git_add_file "$bucklefile" "Add given buckle for $path to store."
+  strapconfig_git_add_file "$bucklefile" "Add given buckle for $path to store."
 }
 
 cmd_edit() {
@@ -567,7 +582,7 @@ cmd_edit() {
   [[ -f $tmp_file ]] || die "New buckle not saved."
   cat "$bucklefile" 2>/dev/null | diff - "$tmp_file" &>/dev/null && die "Buckle unchanged."
   mv -f "$tmp_file" "$bucklefile"
-  git_add_file "$bucklefile" "$action buckle for $path using ${EDITOR:-vi}."
+  strapconfig_git_add_file "$bucklefile" "$action buckle for $path using ${EDITOR:-vi}."
 }
 
 cmd_delete() {
@@ -597,9 +612,9 @@ cmd_delete() {
   [[ $force -eq 1 ]] || yesno "Are you sure you would like to delete $path?"
 
   rm $recursive -f -v "$bucklefile"
-  if [[ -d $STRAP_GIT_DIR && ! -e $bucklefile ]]; then
-      git rm -qr "$bucklefile"
-      git_commit "Remove $path from store."
+  if git_exists "$STRAP_GIT_WORK_TREE" && [[ ! -e $bucklefile ]]; then
+      git_do "$STRAP_GIT_WORK_TREE" rm -qr "$bucklefile"
+      strapconfig_git_commit "Remove $path from store."
   fi
   rmdir -p "${bucklefile%/*}" 2>/dev/null
 }
@@ -637,26 +652,26 @@ cmd_copy_move() {
       mv $interactive -v "$old_path" "$new_path" || exit 1
       [[ -e "$new_path" ]] && reencrypt_path "$new_path"
 
-      if [[ -d $STRAP_GIT_DIR && ! -e $old_path ]]; then
-          git rm -qr "$old_path"
-          git_add_file "$new_path" "Rename ${1} to ${2}."
+      if git_exists "$STRAP_GIT_WORK_TREE" && [[ ! -e $old_path ]]; then
+          git_do "$STRAP_GIT_WORK_TREE" rm -qr "$old_path"
+          strapconfig_git_add_file "$new_path" "Rename ${1} to ${2}."
       fi
       rmdir -p "$old_dir" 2>/dev/null
   else
       cp $interactive -r -v "$old_path" "$new_path" || exit 1
       [[ -e "$new_path" ]] && reencrypt_path "$new_path"
-      git_add_file "$new_path" "Copy ${1} to ${2}."
+      strapconfig_git_add_file "$new_path" "Copy ${1} to ${2}."
   fi
 }
 
 cmd_git() {
   if [[ $1 == "init" ]]; then
-      git "$@" || exit 1
-      git_add_file "$PREFIX" "Add current contents of strap configuration."
-  elif [[ -d $STRAP_GIT_DIR ]]; then
+      git_do "$STRAP_GIT_WORK_TREE" "$@" || exit 1
+      strapconfig_git_add_file "$PREFIX" "Add current contents of strap configuration."
+  elif git_exists "$STRAP_GIT_WORK_TREE"; then
       tmpdir nowarn #Defines $SECURE_TMPDIR. We don't warn, because at most, this only copies encrypted files.
       export TMPDIR="$SECURE_TMPDIR"
-      git "$@"
+      git_do "$STRAP_GIT_WORK_TREE" "$@"
   else
       die "Error: the strap configuration is not a git repository. Try \"$PROGRAM git init\"."
   fi

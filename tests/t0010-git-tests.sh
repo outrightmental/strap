@@ -8,6 +8,6 @@ cd "$(dirname "$0")"
 #      ^ "Git breakage due to inconsistent use internal vs. buckles."
 
 # TODO: smoke test existence of git wrapper function
-
+# TODO: smoke test that internal `strap git ...` commands are actually working in $HOME/.strap/.git
 
 test_done
