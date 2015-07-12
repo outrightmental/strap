@@ -34,59 +34,61 @@ NOBULLET=""
 strapconfig_begin_banner="$VBAR        |\n$VBAR   __|  __|   __|  _\` |  __ \\ \n$VBAR \\__ \\  |    |    (   |  |   |\n$VBAR ____/ \\__| _|   \__,_|  .__/\n$VBAR                        _|"
 strapconfig_complete_banner="$VBAR                       --- \n$VBAR                    -        -- \n$VBAR                --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n$VBAR            --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n$VBAR           /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n$VBAR         /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n$VBAR        /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n$VBAR        \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n$VBAR        \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n ---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
 
-export GIT_DIR="${STRAP_GIT:-$PREFIX}/.git"
-export GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
+export STRAP_GIT_DIR="${STRAP_GIT:-$PREFIX}/.git"
+export STRAP_GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
 
 #
 # BEGIN helper functions
 #
+git_do() {
 
+}
 git_add_file() {
-    [[ -d $GIT_DIR ]] || return
-    git add "$1" || return
-    [[ -n $(git status --porcelain "$1") ]] || return
-    git_commit "$2"
+  [[ -d $STRAP_GIT_DIR ]] || return
+  git add "$1" || return
+  [[ -n $(git status --porcelain "$1") ]] || return
+  git_commit "$2"
 }
 git_commit() {
-    local sign=""
-    [[ -d $GIT_DIR ]] || return
-    [[ $(git config --bool --get strap.signcommits) == "true" ]] && sign="-S"
-    git commit $sign -m "$1"
+  local sign=""
+  [[ -d $STRAP_GIT_DIR ]] || return
+  [[ $(git config --bool --get strap.signcommits) == "true" ]] && sign="-S"
+  git commit $sign -m "$1"
 }
 yesno() {
-    [[ -t 0 ]] || return 0
-    local response
-    read -r -p "$1 [y/N] " response
-    [[ $response == [yY] ]] || exit 1
+  [[ -t 0 ]] || return 0
+  local response
+  read -r -p "$1 [y/N] " response
+  [[ $response == [yY] ]] || exit 1
 }
 space() {
   printf "$VBAR\n"
 }
 die() {
-    echo "$@" >&2
-    exit 1
+  echo "$@" >&2
+  exit 1
 }
 check_sneaky_paths() {
-    local path
-    for path in "$@"; do
-        [[ $path =~ /\.\.$ || $path =~ ^\.\./ || $path =~ /\.\./ || $path =~ ^\.\.$ ]] && die "Error: You've attempted to buckle a sneaky path to strap. Go home."
-    done
+  local path
+  for path in "$@"; do
+    [[ $path =~ /\.\.$ || $path =~ ^\.\./ || $path =~ /\.\./ || $path =~ ^\.\.$ ]] && die "Error: You've attempted to buckle a sneaky path to strap. Go home."
+  done
 }
 parse_yaml() {
-   local prefix=$2
-   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
-   sed -ne "s|^\($s\):|\1|" \
-        -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
-        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
-   awk -F$fs '{
-      indent = length($1)/2;
-      vname[indent] = $2;
-      for (i in vname) {if (i > indent) {delete vname[i]}}
-      if (length($3) > 0) {
-         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
-         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
-      }
-   }'
+  local prefix=$2
+  local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+  sed -ne "s|^\($s\):|\1|" \
+      -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
+      -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+  awk -F$fs '{
+    indent = length($1)/2;
+    vname[indent] = $2;
+    for (i in vname) {if (i > indent) {delete vname[i]}}
+    if (length($3) > 0) {
+      vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+      printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
+    }
+  }'
 }
 repo_git() { # <targetPath> <moduleName> <repoUrl>
   REPODIR="$1/$2"
@@ -201,58 +203,58 @@ buckle_repo() {
 # BEGIN platform definable
 #
 clip() {
-    # This base64 business is because bash cannot store binary data in a shell
-    # variable. Specifically, it cannot store nulls nor (non-trivally) store
-    # trailing new lines.
-    local sleep_argv0="strap sleep on display $DISPLAY"
-    pkill -f "^$sleep_argv0" 2>/dev/null && sleep 0.5
-    local before="$(xclip -o -selection "$X_SELECTION" 2>/dev/null | base64)"
-    echo -n "$1" | xclip -selection "$X_SELECTION" || die "Error: Could not copy data to the clipboard"
-    (
-        ( exec -a "$sleep_argv0" sleep "$CLIP_TIME" )
-        local now="$(xclip -o -selection "$X_SELECTION" | base64)"
-        [[ $now != $(echo -n "$1" | base64) ]] && before="$now"
+  # This base64 business is because bash cannot store binary data in a shell
+  # variable. Specifically, it cannot store nulls nor (non-trivally) store
+  # trailing new lines.
+  local sleep_argv0="strap sleep on display $DISPLAY"
+  pkill -f "^$sleep_argv0" 2>/dev/null && sleep 0.5
+  local before="$(xclip -o -selection "$X_SELECTION" 2>/dev/null | base64)"
+  echo -n "$1" | xclip -selection "$X_SELECTION" || die "Error: Could not copy data to the clipboard"
+  (
+    ( exec -a "$sleep_argv0" sleep "$CLIP_TIME" )
+    local now="$(xclip -o -selection "$X_SELECTION" | base64)"
+    [[ $now != $(echo -n "$1" | base64) ]] && before="$now"
 
-        # It might be nice to programatically check to see if klipper exists,
-        # as well as checking for other common clipboard managers. But for now,
-        # this works fine -- if qdbus isn't there or if klipper isn't running,
-        # this essentially becomes a no-op.
-        #
-        # Clipboard managers frequently write their history out in plaintext,
-        # so we axe it here:
-        qdbus org.kde.klipper /klipper org.kde.klipper.klipper.clearClipboardHistory &>/dev/null
+    # It might be nice to programatically check to see if klipper exists,
+    # as well as checking for other common clipboard managers. But for now,
+    # this works fine -- if qdbus isn't there or if klipper isn't running,
+    # this essentially becomes a no-op.
+    #
+    # Clipboard managers frequently write their history out in plaintext,
+    # so we axe it here:
+    qdbus org.kde.klipper /klipper org.kde.klipper.klipper.clearClipboardHistory &>/dev/null
 
-        echo "$before" | base64 -d | xclip -selection "$X_SELECTION"
-    ) 2>/dev/null & disown
-    echo "Copied $2 to clipboard. Will clear in $CLIP_TIME seconds."
+    echo "$before" | base64 -d | xclip -selection "$X_SELECTION"
+  ) 2>/dev/null & disown
+  echo "Copied $2 to clipboard. Will clear in $CLIP_TIME seconds."
 }
 tmpdir() {
-    [[ -n $SECURE_TMPDIR ]] && return
-    local warn=1
-    [[ $1 == "nowarn" ]] && warn=0
-    local template="$PROGRAM.XXXXXXXXXXXXX"
-    if [[ -d /dev/shm && -w /dev/shm && -x /dev/shm ]]; then
-        SECURE_TMPDIR="$(mktemp -d "/dev/shm/$template")"
-        remove_tmpfile() {
-            rm -rf "$SECURE_TMPDIR"
-        }
-        trap remove_tmpfile INT TERM EXIT
-    else
-        [[ $warn -eq 1 ]] && yesno "$(cat <<-_EOF
-        Your system does not have /dev/shm, which means that it may
-        be difficult to entirely erase the temporary non-encrypted
-        strap file after editing.
+  [[ -n $SECURE_TMPDIR ]] && return
+  local warn=1
+  [[ $1 == "nowarn" ]] && warn=0
+  local template="$PROGRAM.XXXXXXXXXXXXX"
+  if [[ -d /dev/shm && -w /dev/shm && -x /dev/shm ]]; then
+    SECURE_TMPDIR="$(mktemp -d "/dev/shm/$template")"
+    remove_tmpfile() {
+      rm -rf "$SECURE_TMPDIR"
+    }
+    trap remove_tmpfile INT TERM EXIT
+  else
+    [[ $warn -eq 1 ]] && yesno "$(cat <<-_EOF
+    Your system does not have /dev/shm, which means that it may
+    be difficult to entirely erase the temporary non-encrypted
+    strap file after editing.
 
-        Are you sure you would like to continue?
+    Are you sure you would like to continue?
 _EOF
-        )"
-        SECURE_TMPDIR="$(mktemp -d "${TMPDIR:-/tmp}/$template")"
-        shred_tmpfile() {
-            find "$SECURE_TMPDIR" -type f -exec $SHRED {} +
-            rm -rf "$SECURE_TMPDIR"
-        }
-        trap shred_tmpfile INT TERM EXIT
-    fi
+    )"
+    SECURE_TMPDIR="$(mktemp -d "${TMPDIR:-/tmp}/$template")"
+    shred_tmpfile() {
+        find "$SECURE_TMPDIR" -type f -exec $SHRED {} +
+        rm -rf "$SECURE_TMPDIR"
+    }
+    trap shred_tmpfile INT TERM EXIT
+  fi
 
 }
 GETOPT="getopt"
@@ -285,79 +287,79 @@ _EOF
 }
 
 cmd_usage() {
-    cmd_version
-    echo
-    cat <<-_EOF
-    Usage:
-        $PROGRAM init [--path=subfolder,-p subfolder]
-            Initialize new buckle storage a.k.a. strap configuration.
-        $PROGRAM [ls] [subfolder]
-            List buckles.
-        $PROGRAM [up] buckle-name
-          Straps up a buckle named \fIbuckle-name\fP, or (if none specified) straps up all buckles.
-        $PROGRAM [show] [--clip,-c] buckle-name
-            Show existing buckle and optionally put it on the clipboard.
-            If put on the clipboard, it will be cleared in $CLIP_TIME seconds.
-        $PROGRAM find buckle-names...
-          List buckles that match buckle-names.
-        $PROGRAM grep search-string
-            Search for buckle files containing search-string when decrypted.
-        $PROGRAM insert [--echo,-e | --multiline,-m] [--force,-f] buckle-name
-            Insert new buckle. Optionally, echo the buckle back to the console
-            during entry. Or, optionally, the entry may be multiline. Prompt before
-            overwriting existing buckle unless forced.
-        $PROGRAM edit buckle-name
-            Insert a new buckle or edit an existing buckle using ${EDITOR:-vi}.
-        $PROGRAM rm [--recursive,-r] [--force,-f] buckle-name
-            Remove existing buckle or directory, optionally forcefully.
-        $PROGRAM mv [--force,-f] old-path new-path
-            Renames or moves old-path to new-path, optionally forcefully, selectively reencrypting.
-        $PROGRAM cp [--force,-f] old-path new-path
-            Copies old-path to new-path, optionally forcefully, selectively reencrypting.
-        $PROGRAM git git-command-args...
-            If the strap configuration is a git repository, execute a git command
-            specified by git-command-args.
-        $PROGRAM help
-            Show this text.
-        $PROGRAM version
-            Show version information.
+  cmd_version
+  echo
+  cat <<-_EOF
+  Usage:
+    $PROGRAM init [--path=subfolder,-p subfolder]
+        Initialize new buckle storage a.k.a. strap configuration.
+    $PROGRAM [ls] [subfolder]
+        List buckles.
+    $PROGRAM [up] buckle-name
+      Straps up a buckle named \fIbuckle-name\fP, or (if none specified) straps up all buckles.
+    $PROGRAM [show] [--clip,-c] buckle-name
+        Show existing buckle and optionally put it on the clipboard.
+        If put on the clipboard, it will be cleared in $CLIP_TIME seconds.
+    $PROGRAM find buckle-names...
+      List buckles that match buckle-names.
+    $PROGRAM grep search-string
+        Search for buckle files containing search-string when decrypted.
+    $PROGRAM insert [--echo,-e | --multiline,-m] [--force,-f] buckle-name
+        Insert new buckle. Optionally, echo the buckle back to the console
+        during entry. Or, optionally, the entry may be multiline. Prompt before
+        overwriting existing buckle unless forced.
+    $PROGRAM edit buckle-name
+        Insert a new buckle or edit an existing buckle using ${EDITOR:-vi}.
+    $PROGRAM rm [--recursive,-r] [--force,-f] buckle-name
+        Remove existing buckle or directory, optionally forcefully.
+    $PROGRAM mv [--force,-f] old-path new-path
+        Renames or moves old-path to new-path, optionally forcefully, selectively reencrypting.
+    $PROGRAM cp [--force,-f] old-path new-path
+        Copies old-path to new-path, optionally forcefully, selectively reencrypting.
+    $PROGRAM git git-command-args...
+        If the strap configuration is a git repository, execute a git command
+        specified by git-command-args.
+    $PROGRAM help
+        Show this text.
+    $PROGRAM version
+        Show version information.
 
-    More information may be found in the strap(1) man page.
+  More information may be found in the strap(1) man page.
 _EOF
 }
 
 cmd_init() {
-    local opts id_path=""
-    opts="$($GETOPT -o p: -l path: -n "$PROGRAM" --)"
-    local err=$?
-    eval set -- "$opts"
-    while true; do case $1 in
-        -p|--path) id_path="$2"; shift 2 ;;
-        --) shift; break ;;
-    esac done
+  local opts id_path=""
+  opts="$($GETOPT -o p: -l path: -n "$PROGRAM" --)"
+  local err=$?
+  eval set -- "$opts"
+  while true; do case $1 in
+    -p|--path) id_path="$2"; shift 2 ;;
+    --) shift; break ;;
+  esac done
 
-    [[ $err -ne 0 ]] && die "Usage: $PROGRAM $COMMAND [--path=subfolder,-p subfolder]"
-    [[ -n $id_path ]] && check_sneaky_paths "$id_path"
-    [[ -n $id_path && ! -d $PREFIX/$id_path && -e $PREFIX/$id_path ]] && die "Error: $PREFIX/$id_path exists but is not a directory."
+  [[ $err -ne 0 ]] && die "Usage: $PROGRAM $COMMAND [--path=subfolder,-p subfolder]"
+  [[ -n $id_path ]] && check_sneaky_paths "$id_path"
+  [[ -n $id_path && ! -d $PREFIX/$id_path && -e $PREFIX/$id_path ]] && die "Error: $PREFIX/$id_path exists but is not a directory."
 
-    local config_file="$PREFIX/$id_path/config.sh.yml"
+  local config_file="$PREFIX/$id_path/config.sh.yml"
 
-    if [[ $# -eq 1 && -z $1 ]]; then
-        [[ ! -f "$config_file" ]] && die "Error: $config_file does not exist and so cannot be removed."
-        rm -v -f "$config_file" || exit 1
-        if [[ -d $GIT_DIR ]]; then
-            git rm -qr "$config_file"
-            git_commit "Deinitialize ${config_file}."
-        fi
-        rmdir -p "${config_file%/*}" 2>/dev/null
-    else
-        mkdir -v -p "$PREFIX/$id_path"
-        printf "%s\n" "$@" > "$config_file"
-        echo "Strap initialized."
-        git_add_file "$config_file" "Added strap config_file file."
+  if [[ $# -eq 1 && -z $1 ]]; then
+    [[ ! -f "$config_file" ]] && die "Error: $config_file does not exist and so cannot be removed."
+    rm -v -f "$config_file" || exit 1
+    if [[ -d $STRAP_GIT_DIR ]]; then
+      git rm -qr "$config_file"
+      git_commit "Deinitialize ${config_file}."
     fi
+    rmdir -p "${config_file%/*}" 2>/dev/null
+  else
+    mkdir -v -p "$PREFIX/$id_path"
+    printf "%s\n" "$@" > "$config_file"
+    echo "Strap initialized."
+    git_add_file "$config_file" "Added strap config_file file."
+  fi
 
-    git_add_file "$PREFIX/$id_path" "Added new strap configuration."
+  git_add_file "$PREFIX/$id_path" "Added new strap configuration."
 }
 
 cmd_up() {
@@ -595,7 +597,7 @@ cmd_delete() {
   [[ $force -eq 1 ]] || yesno "Are you sure you would like to delete $path?"
 
   rm $recursive -f -v "$bucklefile"
-  if [[ -d $GIT_DIR && ! -e $bucklefile ]]; then
+  if [[ -d $STRAP_GIT_DIR && ! -e $bucklefile ]]; then
       git rm -qr "$bucklefile"
       git_commit "Remove $path from store."
   fi
@@ -635,7 +637,7 @@ cmd_copy_move() {
       mv $interactive -v "$old_path" "$new_path" || exit 1
       [[ -e "$new_path" ]] && reencrypt_path "$new_path"
 
-      if [[ -d $GIT_DIR && ! -e $old_path ]]; then
+      if [[ -d $STRAP_GIT_DIR && ! -e $old_path ]]; then
           git rm -qr "$old_path"
           git_add_file "$new_path" "Rename ${1} to ${2}."
       fi
@@ -651,7 +653,7 @@ cmd_git() {
   if [[ $1 == "init" ]]; then
       git "$@" || exit 1
       git_add_file "$PREFIX" "Add current contents of strap configuration."
-  elif [[ -d $GIT_DIR ]]; then
+  elif [[ -d $STRAP_GIT_DIR ]]; then
       tmpdir nowarn #Defines $SECURE_TMPDIR. We don't warn, because at most, this only copies encrypted files.
       export TMPDIR="$SECURE_TMPDIR"
       git "$@"

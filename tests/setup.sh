@@ -18,8 +18,8 @@ if [[ ! -d $STRAP_DIR ]]; then
 	exit 1
 fi
 
-export GIT_DIR="$STRAP_DIR/.git"
-export GIT_WORK_TREE="$STRAP_DIR"
+export STRAP_GIT_DIR="$STRAP_DIR/.git"
+export STRAP_GIT_WORK_TREE="$STRAP_DIR"
 git config --global user.email "Strap-Automated-Testing-Suite@outright.io"
 git config --global user.name "Strap Automated Testing Suite"
 
