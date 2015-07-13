@@ -45,7 +45,7 @@ test_expect_success 'Buckle made it until the end' '
 '
 
 test_expect_success 'Git is consistent' '
- [[ -z $("$STRAP" git status --porcelain 2>&1) ]]
+ [[ -z $("$STRAP" git status --porcelain cred2>&1) ]]
 '
 
 
