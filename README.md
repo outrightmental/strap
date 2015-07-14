@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/outrightmental/strap.svg)](https://travis-ci.org/outrightmental/strap)
 
-# Just `strap` & go!
+# Just `strap`
 
 Workstation management should be simple and follow [Unix philosophy](http://en.wikipedia.org/wiki/Unix_philosophy). Bootstrap a developer workstation at the start of the day by running one command that self-updates its configuration from a git repository.
 
