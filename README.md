@@ -2,8 +2,6 @@
 
 # Strap
 
-**One command to start your day.**
-
 Workstation management should be simple and follow [Unix philosophy](http://en.wikipedia.org/wiki/Unix_philosophy). Bootstrap a developer workstation at the start of the day by running one command that self-updates its configuration from a git repository.
 
 Helps to make our own physical workstation more ephemeral, enabling work on multiple workstations and recovery when one is lost or compromised.
