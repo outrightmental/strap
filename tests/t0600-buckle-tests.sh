@@ -6,8 +6,6 @@ cd "$(dirname "$0")"
 
 test_expect_success 'Test "strap" command' '
   "$STRAP" init &&
-  "$STRAP" insert -fm "config"<<<"straps:\n  base: echo" &&
-  "$STRAP" insert -e "base/passwordstore"<<<"type: pass" &&
   "$STRAP"
 '
 
