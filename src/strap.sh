@@ -63,10 +63,12 @@ git_buckleup() { # <path> <url>
   local repopath="$1"
   local repourl="$2"
   if git_exists "$repopath"; then
+    # TODO: intelligently fetch & test state of repo instead of thie generic shotgun blast of commands
     printf "${NOBULLET}Syncing existing repository $BOLD$repopath$NORMAL\n"
     printf "$DIM$PURPLE"
     git_do "$repopath" checkout master || error "Failed to checkout master branch of git repo $repopath"
     git_do "$repopath" pull || error "Failed to pull git repo $repopath"
+    git_do "$repopath" push || error "Failed to push git repo $repopath"
     printf "$NORMAL"
   else
     printf "${NOBULLET}Cloning new repository $BOLD$repopath$NORMAL\n"
