@@ -2,7 +2,7 @@
 
 # Copyright (C) 2015 Outright Mental Inc. <hiya@outright.io>. All Rights Reserved.
 # This file is licensed under the GPLv2+. Please see COPYING for more information.
-VERSION='0.2.1'
+VERSION='0.2.2'
 
 umask "${STRAP_UMASK:-077}"
 set -o pipefail
