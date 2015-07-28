@@ -2,6 +2,7 @@
 
 # Copyright (C) 2015 Outright Mental Inc. <hiya@outright.io>. All Rights Reserved.
 # This file is licensed under the GPLv2+. Please see COPYING for more information.
+VERSION='0.2.1'
 
 umask "${STRAP_UMASK:-077}"
 set -o pipefail
@@ -35,7 +36,7 @@ EMPTYBULLET="$VBAR "
 NOBULLET=""
 
 # Default Configuration
-strapconfig_begin_banner="$VBAR        |\n$VBAR   __|  __|   __|  _\` |  __ \\ \n$VBAR \\__ \\  |    |    (   |  |   |\n$VBAR ____/ \\__| _|   \__,_|  .__/\n$VBAR                        _|"
+strapconfig_begin_banner="$VBAR        |\n$VBAR   __|  __|   __|  _\` |  __ \\ \n$VBAR \\__ \\  |    |    (   |  |   |\n$VBAR ____/ \\__| _|   \__,_|  .__/  v$VERSION\n$VBAR                        _|"
 strapconfig_complete_banner="$VBAR                       --- \n$VBAR                    -        -- \n$VBAR                --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n$VBAR            --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n$VBAR           /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n$VBAR         /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n$VBAR        /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n$VBAR        \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n$VBAR        \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n$BLCORNER---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
 
 export STRAP_GIT_DIR="${STRAP_GIT:-$PREFIX}/.git"
@@ -289,18 +290,7 @@ source "$(dirname "$0")/platform/$(uname | cut -d _ -f 1 | tr '[:upper:]' '[:low
 #
 
 cmd_version() {
-    cat <<-_EOF
-    ============================================
-    =   strap: one command to start your day   =
-    =                                          =
-    =                  v0.2.1                  =
-    =                                          =
-    =          by Outright Mental Inc.         =
-    =             hiya@outright.io             =
-    =                                          =
-    =         http://strap.outright.io         =
-    ============================================
-_EOF
+  printf "Strap v$VERSION (http://strap.outright.io)\n"
 }
 
 cmd_usage() {
