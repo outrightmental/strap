@@ -54,7 +54,7 @@ git_clone() { # <path-of-new-repo> <origin-url>
 }
 git_exists() { # <path-of-existing-repo>
   local gitdirpath="$1/.git"
-  [[ -z $gitdirpath ]] || return 1
+  [[ -d $gitdirpath ]] || return 1
 }
 git_do() { # <path-of-existing-repo> <pass-through-everything-else>
   # This function does not require target repo exists (e.g. git init operations) -- other functions may check git_exists before using this function.
