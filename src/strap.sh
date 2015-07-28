@@ -31,6 +31,7 @@ BULLET="$GREEN•$NORMAL "
 CHKBULLET="$GREEN$BOLD✔$NORMAL "
 WARNBULLET="$GOLD•$NORMAL "
 FAILBULLET="$RED•$NORMAL "
+FAILSPLAT="$RED*$NORMAL "
 SUBULLET="$PURPLE├─$NORMAL "
 EMPTYBULLET="$VBAR "
 NOBULLET=""
@@ -48,16 +49,16 @@ export STRAP_GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
 git_clone() { # <path-of-new-repo> <origin-url>
   local repopath=$1
   local originurl=$2
-  if git_exists "$repopath"; then false; fi
+  if git_exists "$repopath"; then return 1; fi
   return $(git clone "$originurl" "$repopath")
 }
 git_exists() { # <path-of-existing-repo>
   local gitdirpath="$1/.git"
-  [[ -d $gitdirpath ]] || false
+  [[ -z $gitdirpath ]] || return 1
 }
 git_do() { # <path-of-existing-repo> <pass-through-everything-else>
+  # This function does not require target repo exists (e.g. git init operations) -- other functions may check git_exists before using this function.
   local repopath=$1
-  git_exists "$repopath" || false
   (cd "$repopath" && git $2 $3 $4 $5 $6 $7 $8 $9)
 }
 git_buckleup() { # <path> <url>
@@ -83,14 +84,19 @@ git_buckleup() { # <path> <url>
   space
 }
 strapconfig_git_add_file() {
+  git_exists "$STRAP_GIT_WORK_TREE" || return 1
   git_do "$STRAP_GIT_WORK_TREE" add "$1" || return
   [[ -n $(git_do "$STRAP_GIT_WORK_TREE" status --porcelain "$1") ]] || return
   strapconfig_git_commit "$2"
+  true
 }
 strapconfig_git_commit() {
+  git_exists "$STRAP_GIT_WORK_TREE" || return 1
   local sign=""
-  [[ $(git_do "$STRAP_GIT_WORK_TREE"  config --bool --get strap.signcommits) == "true" ]] && sign="-S"
-  git_do "$STRAP_GIT_WORK_TREE"  commit $sign -m "$1"
+  local message=""
+  [[ $(git_do "$STRAP_GIT_WORK_TREE" config --bool --get strap.signcommits) == "true" ]] && sign="-S"
+  git_do "$STRAP_GIT_WORK_TREE" commit $sign -m "$message"
+  echo 'NUTS'
 }
 yesno() {
   [[ -t 0 ]] || return 0
@@ -108,7 +114,7 @@ die() {
 check_sneaky_paths() {
   local path
   for path in "$@"; do
-    [[ $path =~ /\.\.$ || $path =~ ^\.\./ || $path =~ /\.\./ || $path =~ ^\.\.$ ]] && die "Error: You've attempted to buckle a sneaky path to strap. Go home."
+    [[ $path =~ /\.\.$ || $path =~ ^\.\./ || $path =~ /\.\./ || $path =~ ^\.\.$ ]] && error "You've attempted to buckle a sneaky path to strap. Go home."
   done
 }
 parse_yaml() {
@@ -130,8 +136,7 @@ parse_yaml() {
 error() {
   if (( $# >= 1 )); then MSG="$1"; else MSG=""; fi
   printf "${FAILBULLET}Error! $MSG\n"
-  space
-  if (( $# >= 2 )); then exit $2; else exit 1; fi
+  die "${FAILSPLAT}"
 }
 #
 # END helper functions
@@ -227,7 +232,7 @@ clip() {
   local sleep_argv0="strap sleep on display $DISPLAY"
   pkill -f "^$sleep_argv0" 2>/dev/null && sleep 0.5
   local before="$(xclip -o -selection "$X_SELECTION" 2>/dev/null | base64)"
-  echo -n "$1" | xclip -selection "$X_SELECTION" || die "Error: Could not copy data to the clipboard"
+  echo -n "$1" | xclip -selection "$X_SELECTION" || error "Could not copy data to the clipboard"
   (
     ( exec -a "$sleep_argv0" sleep "$CLIP_TIME" )
     local now="$(xclip -o -selection "$X_SELECTION" | base64)"
@@ -347,12 +352,13 @@ cmd_init() {
 
   [[ $err -ne 0 ]] && die "Usage: $PROGRAM $COMMAND [--path=subfolder,-p subfolder]"
   [[ -n $id_path ]] && check_sneaky_paths "$id_path"
-  [[ -n $id_path && ! -d $PREFIX/$id_path && -e $PREFIX/$id_path ]] && die "Error: $PREFIX/$id_path exists but is not a directory."
+  [[ -n $id_path && ! -d $PREFIX/$id_path && -e $PREFIX/$id_path ]] && error "$PREFIX/$id_path exists but is not a directory."
 
   local config_file="$PREFIX/$id_path/config.sh.yml"
 
   if [[ $# -eq 1 && -z $1 ]]; then
-    [[ ! -f "$config_file" ]] && die "Error: $config_file does not exist and so cannot be removed."
+    # TODO: what is this block? Is it necessary at all?
+    [[ ! -f "$config_file" ]] && error "$config_file does not exist and so cannot be removed."
     rm -v -f "$config_file" || exit 1
     if git_exists "$STRAP_GIT_WORK_TREE"; then
       git_do "$STRAP_GIT_WORK_TREE" rm -qr "$config_file"
@@ -360,6 +366,7 @@ cmd_init() {
     fi
     rmdir -p "${config_file%/*}" 2>/dev/null
   else
+    [[ -f "$config_file" ]] && error "$config_file already exists!"
     mkdir -v -p "$PREFIX/$id_path"
     printf "%s\n" "$@" > "$config_file"
     echo "Strap initialized."
