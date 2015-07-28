@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 . ./setup.sh
 
 test_expect_success 'Make sure we can run strap' '
-    "$STRAP" --help | grep "strap: one command to start your day"
+    "$STRAP" --help | grep "Strap"
 '
 
 test_expect_success 'Make sure we can initialize our test store' '
