@@ -187,4 +187,4 @@ Code originated as a fork of [pass](http://passwordstore.org) a utility which is
 
 # Contributing
 
-Please see [CONTRIB](CONTRIB.md)
+Please see [CONTRIB](https://github.com/outrightmental/strap/blob/master/CONTRIB.md)

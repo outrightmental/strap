@@ -1,5 +1,9 @@
 [![Build Status](https://travis-ci.org/outrightmental/strap.svg)](https://travis-ci.org/outrightmental/strap)
 
+# Jump in there
+
+Most of all, thanks! Please take a look at [our issues](https://github.com/outrightmental/strap/issues) and go for one, or write more!
+
 # Tagging a Release
 
 1. Be on a stable `master` branch
