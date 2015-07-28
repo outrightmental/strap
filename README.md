@@ -184,3 +184,7 @@ To do:
 This project created and spearheaded by [Charney Kaye](http://w.charney.io) of [Outright Mental Inc.](http://w.outright.io).
 
 Code originated as a fork of [pass](http://passwordstore.org) a utility which is truly the light at the end of a long dark tunnel of less worthy password management options. `pass` is a bastion of Unix philosophy and we could only hope to be as mighty in our effort. Thanks be!
+
+# Contributing
+
+Please see [CONTRIB](CONTRIB.md)
