@@ -23,7 +23,6 @@ test_expect_success 'Test "rm" of non-existent buckle' '
 '
 
 test_expect_success 'Test cannot "rm" required buckle config.sh.yml' '
-  "$STRAP" init &&
   test_must_fail "$STRAP" rm config
 '
 

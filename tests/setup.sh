@@ -11,12 +11,15 @@ TEST_HOME="$(pwd)"
 . ./sharness.sh
 
 export STRAP_DIR="$SHARNESS_TRASH_DIRECTORY/test-store/"
-rm -rf "$STRAP_DIR"
-mkdir -p "$STRAP_DIR"
-if [[ ! -d $STRAP_DIR ]]; then
-	echo "Could not create $STRAP_DIR"
-	exit 1
-fi
+reset() {
+  rm -rf "$STRAP_DIR"
+  mkdir -p "$STRAP_DIR"
+  if [[ ! -d $STRAP_DIR ]]; then
+    echo "Could not create $STRAP_DIR"
+    exit 1
+  fi
+}
+reset
 
 export STRAP_GIT_DIR="$STRAP_DIR/.git"
 export STRAP_GIT_WORK_TREE="$STRAP_DIR"
