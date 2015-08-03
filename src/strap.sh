@@ -93,10 +93,9 @@ strapconfig_git_add_file() {
 strapconfig_git_commit() {
   git_exists "$STRAP_GIT_WORK_TREE" || return 1
   local sign=""
-  local message=""
+  local message="$1"
   [[ $(git_do "$STRAP_GIT_WORK_TREE" config --bool --get strap.signcommits) == "true" ]] && sign="-S"
-  git_do "$STRAP_GIT_WORK_TREE" commit $sign -m "$message"
-  echo 'NUTS'
+  git_do "$STRAP_GIT_WORK_TREE" commit $sign -m "${message//[^A-Za-z0-9]/_}"
 }
 yesno() {
   [[ -t 0 ]] || return 0
