@@ -198,8 +198,8 @@ buckle_rbenv() {
   if grep -i -q '^[0-9\.]* ' $tmpfile; then
     printf "${SUBULLET}${BLUE}rbenv$NORMAL v$rbenv_version\n"
   elif [[ "$OSTYPE" == "linux"* ]]; then
-    git_buckleup $HOME/.rbenv https://github.com/sstephenson/rbenv.git
-    git_buckleup $HOME/.rbenv/plugins/ruby-build https://github.com/sstephenson/ruby-build.git
+    git_buckleup $HOME/.rbenv git@github.com:sstephenson/rbenv.git
+    git_buckleup $HOME/.rbenv/plugins/ruby-build git@github.com:sstephenson/ruby-build.git
   else
     printf "${SUBULLET}${RED}rbenv$NORMAL\n"
     error "Please manually install ${BOLD}rbenv$NORMAL"
