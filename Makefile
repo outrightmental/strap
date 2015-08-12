@@ -62,6 +62,7 @@ uninstall:
 	@rmdir "$(DESTDIR)$(LIBDIR)/strap/" 2>/dev/null || true
 
 TESTS = $(sort $(wildcard tests/t[0-9][0-9][0-9][0-9]-*.sh))
+STRAP_TEST_OPTS = "-v"
 
 test: $(TESTS)
 

@@ -6,9 +6,9 @@ cd "$(dirname "$0")"
 
 test_expect_success 'Test "rm" command' '
 	"$STRAP" init &&
-	"$STRAP" insert -e "cred1"<<<"BLAH!!" &&
-	"$STRAP" rm cred1 &&
-	[[ ! -e $STRAP_DIR/cred1.sh.yml ]]
+	"$STRAP" insert -e "person1"<<<"BLAH!!" &&
+	"$STRAP" rm person1 &&
+	[[ ! -e $STRAP_DIR/person1.sh.yml ]]
 '
 
 test_expect_success 'Test "rm" command with spaces' '
