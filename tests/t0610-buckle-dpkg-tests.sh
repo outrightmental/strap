@@ -6,8 +6,10 @@ cd "$(dirname "$0")"
 
 test_expect_success 'Test buckles of type "dpkg"' '
   "$STRAP" init &&
-  "$STRAP" insert -fm "config"<<<"straps:\n  ubuntu: [[ \"\$OSTYPE\" == \"linux\"* ]] && apt-get -v" &&
-  "$STRAP" insert -e "ubuntu/passwordstore"<<<"type: dpkg\nname: git" &&
+  "$STRAP" insert -m "config"<<<"straps:
+  ubuntu: [[ \"\$OSTYPE\" == \"linux\"* ]] && apt-get -v" &&
+  "$STRAP" insert -m "ubuntu/passwordstore"<<<"type: dpkg
+name: git" &&
   "$STRAP"
 '
 

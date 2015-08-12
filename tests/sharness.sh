@@ -672,14 +672,14 @@ SHARNESS_TEST_FILE="./$(basename "$0")"
 export SHARNESS_TEST_FILE
 
 # Prepare test area.
-test_dir="trash directory.$(basename "$SHARNESS_TEST_FILE" ".$SHARNESS_TEST_EXTENSION")"
+test_dir="trash/$(basename "$SHARNESS_TEST_FILE" ".$SHARNESS_TEST_EXTENSION")"
 test -n "$root" && test_dir="$root/$test_dir"
 case "$test_dir" in
 /*) SHARNESS_TRASH_DIRECTORY="$test_dir" ;;
  *) SHARNESS_TRASH_DIRECTORY="$SHARNESS_TEST_DIRECTORY/$test_dir" ;;
 esac
 test "$debug" = "t" || remove_trash="$SHARNESS_TRASH_DIRECTORY"
-rm -rf "$test_dir" || {
+rm -rf "$SHARNESS_TRASH_DIRECTORY" || {
 	EXIT_OK=t
 	echo >&5 "FATAL: Cannot prepare test area"
 	exit 1

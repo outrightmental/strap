@@ -23,25 +23,27 @@ GRAY=$(tput setaf 7)
 DIM=$(tput dim)
 
 # Bullets
-VBAR="$PURPLE$DIM│$NORMAL"
-HBAR="$PURPLE$DIM─$NORMAL"
-BLCORNER="$PURPLE$DIM└$NORMAL"
-TLCORNER="$PURPLE$DIM┌$NORMAL"
-BULLET="$GREEN•$NORMAL "
-CHKBULLET="$GREEN$BOLD✔$NORMAL "
-WARNBULLET="$GOLD•$NORMAL "
-FAILBULLET="$RED•$NORMAL "
-FAILSPLAT="$RED*$NORMAL "
-SUBULLET="$PURPLE├─$NORMAL "
-EMPTYBULLET="$VBAR "
+VBAR="${PURPLE}${DIM}│${NORMAL}"
+HBAR="${PURPLE}${DIM}─${NORMAL}"
+SPLAT="*"
+BLCORNER="${PURPLE}${DIM}└${NORMAL}"
+TLCORNER="${PURPLE}${DIM}┌${NORMAL}"
+BULLET="${GREEN}•${NORMAL} "
+CHKBULLET="${GREEN}${BOLD}✔${NORMAL} "
+WARNBULLET="${GOLD}•${NORMAL} "
+FAILSPLAT="${GOLD}${SPLAT}${NORMAL} "
+FAILBULLET="${RED}•${NORMAL} "
+FAILSPLAT="${RED}${SPLAT}${NORMAL} "
+SUBULLET="${PURPLE}├─${NORMAL} "
+EMPTYBULLET="${VBAR} "
 NOBULLET=""
 
 # Default Configuration
-strapconfig_begin_banner="$VBAR        |\n$VBAR   __|  __|   __|  _\` |  __ \\ \n$VBAR \\__ \\  |    |    (   |  |   |\n$VBAR ____/ \\__| _|   \__,_|  .__/  v$VERSION\n$VBAR                        _|"
-strapconfig_complete_banner="$VBAR                       --- \n$VBAR                    -        -- \n$VBAR                --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n$VBAR            --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n$VBAR           /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n$VBAR         /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n$VBAR        /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n$VBAR        \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n$VBAR        \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n$BLCORNER---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
+strapconfig_begin_banner="${VBAR}        |\n${VBAR}   __|  __|   __|  _\` |  __ \\ \n${VBAR} \\__ \\  |    |    (   |  |   |\n${VBAR} ____/ \\__| _|   \__,_|  .__/  v$VERSION\n${VBAR}                        _|"
+strapconfig_complete_banner="${VBAR}                       --- \n${VBAR}                    -        -- \n${VBAR}                --( /     \\ )\$\$\$\$\$\$\$\$\$\$\$\$\$ \n${VBAR}            --\$\$\$(   O   O  )\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n${VBAR}           /\$\$\$(       U     )        \$\$\$\$\$\$\$\\ \n${VBAR}         /\$\$\$\$\$(              )--   \$\$\$\$\$\$\$\$\$\$\$\\ \n${VBAR}        /\$\$\$\$\$/ (      O     )   \$\$\$\$\$\$   \\\$\$\$\$\$\\ \n${VBAR}        \$\$\$\$\$/   /            \$\$\$\$\$\$   \\   \\\$\$\$\$\$---- \n${VBAR}        \$\$\$\$\$\$  /          \$\$\$\$\$\$         \\  ----  - \n$BLCORNER---     \$\$\$  /          \$\$\$\$\$\$      \\           --- \n   --  --  /      /\\  \$\$\$\$\$\$            /     ---= \n     -        /    \$\$\$\$\$\$              '--- \$\$\$\$\$\$ \n       --\\/\$\$\$\\ \$\$\$\$\$\$                      /\$\$\$\$\$ \n         \\\$\$\$\$\$\$\$\$\$                        /\$\$\$\$\$/ \n          \\\$\$\$\$\$\$                         /\$\$\$\$\$/ \n            \\\$\$\$\$\$--  /                -- \$\$\$\$/ \n             --\$\$\$\$\$\$\$---------------  \$\$\$\$\$-- \n                \\\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$- \n                  --\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$-    \n\n"
 
-export STRAP_GIT_DIR="${STRAP_GIT:-$PREFIX}/.git"
-export STRAP_GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
+STRAP_GIT_DIR="${STRAP_GIT:-$PREFIX}/.git"
+STRAP_GIT_WORK_TREE="${STRAP_GIT:-$PREFIX}"
 
 #
 # BEGIN helper functions
@@ -50,7 +52,7 @@ git_clone() { # <path-of-new-repo> <origin-url>
   local repopath=$1
   local originurl=$2
   if git_exists "$repopath"; then return 1; fi
-  return $(git clone "$originurl" "$repopath")
+  return $(git_exec clone "$originurl" "$repopath")
 }
 git_exists() { # <path-of-existing-repo>
   local gitdirpath="$1/.git"
@@ -59,23 +61,34 @@ git_exists() { # <path-of-existing-repo>
 git_do() { # <path-of-existing-repo> <pass-through-everything-else>
   # This function does not require target repo exists (e.g. git init operations) -- other functions may check git_exists before using this function.
   local repopath=$1
-  (cd "$repopath" && git $2 $3 $4 $5 $6 $7 $8 $9)
+  (cd "$repopath" && git_exec $2 $3 $4 $5 $6 $7 $8 $9)
+  # TODO: ^ this could unshift the first arg, and then pass $@ to git_exec
 }
-git_buckleup() { # <path> <url>
+git_exec() {
+  if [ -z "${STRAP_MOCK_GIT}" ]; then
+    git "$@"
+  elif [ "${STRAP_MOCK_GIT}" == "positive" ]; then
+    return 0
+  elif [ "${STRAP_MOCK_GIT}" == "negative" ]; then
+    return 1
+  fi  
+}
+git_buckleup() { # <path> <url> <mode>
   local repopath="$1"
   local repourl="$2"
+  local mode="$3"
   if git_exists "$repopath"; then
     # TODO: intelligently fetch & test state of repo instead of thie generic shotgun blast of commands
-    printf "${NOBULLET}Syncing existing repository $BOLD$repopath$NORMAL\n"
-    printf "$DIM$PURPLE"
+    printf "${NOBULLET}Syncing existing repository ${BOLD}$repopath${NORMAL}\n"
+    printf "${DIM}${PURPLE}"
     git_do "$repopath" checkout master || error "Failed to checkout master branch of git repo $repopath"
     git_do "$repopath" pull || error "Failed to pull git repo $repopath"
-    git_do "$repopath" push || error "Failed to push git repo $repopath"
-    printf "$NORMAL"
+    [ "$mode" == "pull" ] || git_do "$repopath" push || error "Failed to push git repo $repopath" # skipped in "pull" mode
+    printf "${NORMAL}"
   else
-    printf "${NOBULLET}Cloning new repository $BOLD$repopath$NORMAL\n"
+    printf "${NOBULLET}Cloning new repository ${BOLD}$repopath${NORMAL}\n"
     if [ ! -d "$repopath" ]; then
-      printf "${NOBULLET}Creating directory $BOLD$repopath$NORMAL\n"
+      printf "${NOBULLET}Creating directory ${BOLD}$repopath${NORMAL}\n"
       mkdir -p "$repopath" || error "Failed to create path to $repopath"
     fi
     rm -fr "$repopath" || error "Failed to clear path $repopath"
@@ -104,7 +117,14 @@ yesno() {
   [[ $response == [yY] ]] || exit 1
 }
 space() {
-  printf "$VBAR\n"
+  printf "${VBAR}\n"
+}
+printempty() {
+  local COUNTER=0
+  while [ $COUNTER -lt $1 ]; do
+  printf " "
+    let COUNTER=COUNTER+1
+  done
 }
 die() {
   echo "$@" >&2
@@ -147,7 +167,7 @@ error() {
 #
 prebuckle_whoami() {
   WHOAMI=$(whoami) || error "Must be logged in!"
-  printf "${BULLET}hello ${BOLD}$WHOAMI$NORMAL\n"
+  printf "${BULLET}hello ${BOLD}$WHOAMI${NORMAL}\n"
   sudo -v || error "Must be Sudoer!"
 }
 banner() {
@@ -156,65 +176,112 @@ banner() {
 buckleup() {
   local bfile="$1"
   local btype=$( cat $bfile | grep ^type: | sed -e 's/type:\s*\([a-z0-9]\+\)/\1/g' )
-  local cmd="buckle_$btype $bfile $2"
-  eval $cmd
+  local cmd="buckle_$btype $bfile $2"  
+  eval $cmd || die "${FAILSPLAT}${RED}Failed! ${GRAY}buckle:${GOLD}$2 ${GRAY}type:${GOLD}$btype${GRAY}"
+}
+buckle_manual() {
+  eval $(parse_yaml $1 "buckledata_") || error "Could not open ${BOLD}$2${NORMAL}"
+  if [ -z "$buckledata_name" ]; then error "${BOLD}$2${NORMAL} must have a ${BOLD}name:${NORMAL}"; fi
+  if [ -z "$buckledata_note" ]; then error "${BOLD}$2${NORMAL} must have a ${BOLD}note:${NORMAL}"; fi
+  if [ -z "$buckledata_ensure" ]; then error "${BOLD}$2${NORMAL} must have a ${BOLD}ensure:${NORMAL}"; fi
+  local ensurance
+  if ensurance=$(eval ${buckledata_ensure}); then
+    printf "${SUBULLET}${BLUE}$buckledata_name${NORMAL} "
+    local firstline=1
+    while read -r line; do
+      if [ $firstline == 0 ]; then
+        printf "${EMPTYBULLET} "
+        printempty ${#buckledata_name}
+        printf " $line\n"
+      else
+        printf "$line\n"
+        firstline=0
+      fi
+    done <<< "$ensurance"
+  else
+    printf "${WARNBULLET}$buckledata_note${NORMAL}\n"
+    die "${WARNSPLAT}"
+  fi
 }
 buckle_dpkg() {
-  eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
-  if [ -z $buckledata_name ]; then error "$BOLD$2$NORMAL must have a ${BOLD}name:$NORMAL"; fi
+  eval $(parse_yaml $1 "buckledata_") || error "Could not open ${BOLD}$2${NORMAL}"
+  if [ -z "$buckledata_name" ]; then error "${BOLD}$2${NORMAL} must have a ${BOLD}name:${NORMAL}"; fi
   local tmpfile=$(mktemp)
   local dpkg_name=$buckledata_name
   dpkg -s $dpkg_name > $tmpfile
   local dpkg_version=$(cat $tmpfile | grep -i ^version | sed -e 's/version: \(.*\)/\1/gi' )
   if grep -i -q '^status.*installed' $tmpfile; then
-    printf "${SUBULLET}$BLUE$dpkg_name$NORMAL $dpkg_version\n"
+    printf "${SUBULLET}${BLUE}$dpkg_name${NORMAL} $dpkg_version\n"
   else
-    printf "${SUBULLET}$GOLD$dpkg_name$NORMAL\n"
+    printf "${SUBULLET}${GOLD}$dpkg_name${NORMAL}\n"
     sudo apt-get install $dpkg_name
   fi
   rm $tmpfile
 }
 buckle_pass() {
-  eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
+  eval $(parse_yaml $1 "buckledata_") || error "Could not open ${BOLD}$2${NORMAL}"
   local tmpfile=$(mktemp)
-  pass version > $tmpfile
+  {
+    buckle_pass_exec version
+  } &> $tmpfile
   local pass_version=$(cat $tmpfile | grep -i ' v[0-9\.]* ' | sed -e 's/.* v\([0-9\.]\+\) .*/\1/gi')
   if grep -i -q ' v[0-9\.]* ' $tmpfile; then
-    printf "${SUBULLET}${BLUE}pass$NORMAL v$pass_version\n"
+    printf "${SUBULLET}${BLUE}pass${NORMAL} v$pass_version\n"
   else
-    printf "${SUBULLET}${RED}pass$NORMAL\n"
-    error "Please manually install ${BOLD}pass$NORMAL"
+    printf "${SUBULLET}${RED}pass${NORMAL}\n"
+    error "Please manually install ${BOLD}pass${NORMAL}"
   fi
-  printf "$DIM$PURPLE"
-  pass git pull
-  pass git push
-  printf "$NORMAL"
+  printf "${DIM}${PURPLE}"
+  buckle_pass_exec git pull && buckle_pass_exec git push
+  printf "${NORMAL}"
+}
+buckle_pass_exec() {
+  if [ -z "${STRAP_MOCK_BUCKLES}" ]; then
+    pass "$@"
+  elif [ "${STRAP_MOCK_BUCKLES}" == "positive" ]; then
+    if [ $1 == 'version' ]; then
+      printf " MOCK PASS v0.0.0 "
+    fi
+  elif [ "${STRAP_MOCK_BUCKLES}" == "negative" ]; then
+    return 1
+  fi
 }
 buckle_rbenv() {
-  eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
+  eval $(parse_yaml $1 "buckledata_") || error "Could not open ${BOLD}$2${NORMAL}"
   local tmpfile=$(mktemp)
-  rbenv version > $tmpfile
-  local rbenv_version=$(cat $tmpfile | grep -i '^[0-9\.]* ' | sed -e 's/.* v\([0-9\.]\+\) .*/\1/gi')
-  if grep -i -q '^[0-9\.]* ' $tmpfile; then
-    printf "${SUBULLET}${BLUE}rbenv$NORMAL v$rbenv_version\n"
+  {
+    buckle_rbenv_exec
+  } &> $tmpfile
+  local rbenv_version=$(cat $tmpfile | grep -i '[0-9]*\.[0-9]*\.[0-9]*' | sed -e 's/.* \([0-9]*\.[0-9]*\.[0-9]*\).*/\1/gi')
+  if grep -i -q '[0-9]*\.[0-9]*\.[0-9]*' $tmpfile; then
+    printf "${SUBULLET}${BLUE}rbenv${NORMAL} v$rbenv_version\n"
   elif [[ "$OSTYPE" == "linux"* ]]; then
-    git_buckleup $HOME/.rbenv git@github.com:sstephenson/rbenv.git
-    git_buckleup $HOME/.rbenv/plugins/ruby-build git@github.com:sstephenson/ruby-build.git
+    git_buckleup $HOME/.rbenv git@github.com:sstephenson/rbenv.git pull
+    git_buckleup $HOME/.rbenv/plugins/ruby-build git@github.com:sstephenson/ruby-build.git pull
   else
-    printf "${SUBULLET}${RED}rbenv$NORMAL\n"
-    error "Please manually install ${BOLD}rbenv$NORMAL"
+    printf "${SUBULLET}${RED}rbenv${NORMAL}\n"
+    error "Please manually install ${BOLD}rbenv${NORMAL}"
+  fi
+}
+buckle_rbenv_exec() {
+  if [ -z "${STRAP_MOCK_BUCKLES}" ]; then
+    rbenv "$@"
+  elif [ "${STRAP_MOCK_BUCKLES}" == "positive" ]; then
+    printf "rbenv 0.0.0\n"
+  elif [ "${STRAP_MOCK_BUCKLES}" == "negative" ]; then
+    return 1
   fi
 }
 buckle_repo() {
-  eval $(parse_yaml $1 "buckledata_") || error "Could not open $BOLD$2$NORMAL"
-  if [ -z $buckledata_vcs ]; then $buckledata_vcs='git'; fi
-  if [ -z $buckledata_url ]; then error "$BOLD$2$NORMAL must have a ${BOLD}url:$NORMAL"; fi
-  if [ -z $buckledata_path ]; then error "$BOLD$2$NORMAL must have a ${BOLD}path:$NORMAL"; fi
-  printf "${SUBULLET}${BLUE}$buckledata_url$NORMAL\n"
+  eval $(parse_yaml $1 "buckledata_") || error "Could not open ${BOLD}$2${NORMAL}"
+  if [ -z "$buckledata_vcs" ]; then $buckledata_vcs='git'; fi
+  if [ -z "$buckledata_url" ]; then error "${BOLD}$2${NORMAL} must have a ${BOLD}url:${NORMAL}"; fi
+  if [ -z "$buckledata_path" ]; then error "${BOLD}$2${NORMAL} must have a ${BOLD}path:${NORMAL}"; fi
+  printf "${SUBULLET}${BLUE}$buckledata_url${NORMAL}\n"
   if [ $buckledata_vcs == 'git' ]; then
     git_buckleup $buckledata_path $buckledata_url
   else
-    error "Strap does not support vcs $BOLD$buckledata_vcs"
+    error "Strap does not support vcs ${BOLD}$buckledata_vcs"
   fi
 }
 #
@@ -419,10 +486,10 @@ cmd_up() {
     do
       strapvalue="strapconfig_straps_$eachstrap"
       if eval ${!strapvalue} >> /dev/null; then
-        printf "${CHKBULLET}$BOLD$eachstrap$NORMAL\n"
+        printf "${CHKBULLET}${BOLD}$eachstrap${NORMAL}\n"
         straplist="$straplist $eachstrap"
       else
-        printf "${WARNBULLET}no $eachstrap$NORMAL\n"
+        printf "${WARNBULLET}no $eachstrap${NORMAL}\n"
       fi
       space
     done
@@ -444,7 +511,7 @@ cmd_up() {
     for upstrap in $straplist
     do
       strapregex="^.*/$upstrap/.*$"
-      printf "${BULLET}Strap $BOLD$GREEN$upstrap$NORMAL...\n"
+      printf "${BULLET}Strap ${BOLD}${GREEN}$upstrap${NORMAL}...\n"
       space
       for file in `find "$PREFIX/$path" -type f -path "$PREFIX/.git" -prune -o -name '*.sh.yml'`
       do
@@ -456,7 +523,7 @@ cmd_up() {
       space
     done
     banner "$strapconfig_complete_banner"
-    printf "${CHKBULLET}${BOLD}Strapped$NORMAL. Happy Coding!\n\n"
+    printf "${CHKBULLET}${BOLD}Strapped${NORMAL}. Happy Coding!\n\n"
   elif [[ -z $path ]]; then
     die "Error: strap configuration is empty. Try \"strap init\"."
   else
