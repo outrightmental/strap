@@ -134,8 +134,6 @@ strong {
 }
 
 img {
-  width: 100%;
-  height: auto;
   position: relative;
   margin: 0 auto;
   max-width: 739px;
@@ -148,6 +146,11 @@ img {
   -moz-box-shadow: 0 0 5px #ebebeb;
   -o-box-shadow: 0 0 5px #ebebeb;
   -ms-box-shadow: 0 0 5px #ebebeb;
+}
+
+img.autosize{
+  width: 100%;
+  height: auto;
 }
 
 p img {
