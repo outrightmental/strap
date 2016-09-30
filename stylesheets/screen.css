@@ -112,6 +112,11 @@ header, footer, section {
 
 /* STYLES */
 
+img {
+  width: 100%;
+  height: auto;
+}
+
 div.shell {
   display: block;
   width: 670px;
