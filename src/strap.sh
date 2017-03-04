@@ -214,7 +214,7 @@ buckle_dpkg() {
     printf "${SUBULLET}${BLUE}$dpkg_name${NORMAL} $dpkg_version\n"
   else
     printf "${SUBULLET}${GOLD}$dpkg_name${NORMAL}\n"
-    sudo apt-get install $dpkg_name
+    sudo apt-get --yes install $dpkg_name
   fi
   rm $tmpfile
 }
