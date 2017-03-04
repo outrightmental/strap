@@ -70,7 +70,6 @@ And so on, and so forth.. This is a scaffold for *your* personal configuration. 
 
 From within a bash terminal:
 
-    mkdir -p ~/OpenSource/ && cd ~/OpenSource
     git clone git@github.com:outrightmental/strap.git
     cd strap && sudo make install
 
